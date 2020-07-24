@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:google-business-communications/nodejs-businessmessages.git"
+    "url": "git@github.com:google-business-communications/nodejs-businesscommunications.git"
   },
   "author": "Sean Falconer",
   "license": "Apache-2.0"
