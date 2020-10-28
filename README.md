@@ -60,7 +60,7 @@ function initClientLibrary(serviceAccountFile) {
 
 // Authenticate with the API using a service account key file and
 // create a test brand
-const apiConnector = initClientLibrary('your-service-account-key-file-locatoin');
+const apiConnector = initClientLibrary('your-service-account-key-file-location');
 apiConnector.then((apiObject) => {
   // Setup the parameters for the API call
   const apiParams = {
