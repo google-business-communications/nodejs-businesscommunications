@@ -23,62 +23,62 @@ npm install businesscommunications
 
 ```javascript
 function initClientLibrary(serviceAccountFile) {
-	// Get the GoogleAPI library
-  	const {google} = require('googleapis');
-  	const {businesscommunications} = require('businesscommunications');
+  // Get the GoogleAPI library
+  const {google} = require('googleapis');
+  const {businesscommunications} = require('businesscommunications');
 
-  	// Set the scope that we need for the Business Communications API
-  	const scopes = [
-      	'https://www.googleapis.com/auth/businesscommunications',
-  	];
+  // Set the scope that we need for the Business Communications API
+  const scopes = [
+    'https://www.googleapis.com/auth/businesscommunications',
+  ];
 
-  	// Set the private key to the service account file
-  	const privatekey = require(serviceAccountFile);
+  // Set the private key to the service account file
+  const privatekey = require(serviceAccountFile);
 
-	  // configure a JWT auth client
-	  let authClient = new google.auth.JWT(
-	      privatekey.client_email,
-	      null,
-	      privatekey.private_key,
-	      scopes,
-	  );
+  // Configure a JWT auth client
+  let authClient = new google.auth.JWT(
+	privatekey.client_email,
+	null,
+	privatekey.private_key,
+	scopes,
+  );
 
-	  // Initialize the client library
-	  let bcApi = new businesscommunications.businesscommunications_v1.Businesscommunications({}, google);
+  // Initialize the client library
+  let bcApi = new businesscommunications.businesscommunications_v1.Businesscommunications({}, google);
 
-	  return new Promise(function(resolve, reject) {
-  		  // Authenticate request
-	      authClient.authorize(function(err, tokens) {
-			  if (err) {
-	              console.log('Error initiatizing library.');
-	          } else {
-	              resolve({authClient: authClient, bcApi: bcApi});
-	          }
-	       });
-	    });
+  return new Promise(function(resolve, reject) {
+  	// Authenticate request
+  	authClient.authorize(function(err, tokens) {
+	  if (err) {
+		console.log('Error initiatizing library.');
+      } else {
+	  	resolve({authClient: authClient, bcApi: bcApi});
+	  }
+	});
+  });
 }
 
 // Authenticate with the API using a service account key file and
 // create a test brand
 const apiConnector = initClientLibrary('your-service-account-key-file-locatoin');
 apiConnector.then((apiObject) => {
-	// Setup the parameters for the API call
-  	const apiParams = {
-    	auth: apiObject.authClient,
-    	resource: {
-      		displayName: 'Test Brand',
-    	},
-  	};
+  // Setup the parameters for the API call
+  const apiParams = {
+	auth: apiObject.authClient,
+	resource: {
+	  displayName: 'Test Brand',
+	},
+  };
 
-  	// Create a new brand with the name "Test Brand"
-	apiObject.bcApi.brands.create(apiParams, {}, (err, response) => {
-		if (err !== undefined && err !== null) {
-      		console.log('Error creating brand: ' + err);
-    	} else {
-      		// Print newly created brand details
-      		console.log(response.data);
-  		}
-  	});
+  // Create a new brand with the name "Test Brand"
+  apiObject.bcApi.brands.create(apiParams, {}, (err, response) => {
+	if (err !== undefined && err !== null) {
+  	  console.log('Error creating brand: ' + err);
+	} else {
+      // Print newly created brand details
+      console.log(response.data);
+	}
+  });
 });
 ```
 
