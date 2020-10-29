@@ -25,7 +25,7 @@ npm install businesscommunications
 function initClientLibrary(serviceAccountFile) {
   // Get the GoogleAPI library
   const {google} = require('googleapis');
-  const {businesscommunications} = require('businesscommunications');
+  const businesscommunications = require('businesscommunications');
 
   // Set the scope that we need for the Business Communications API
   const scopes = [
