@@ -28,14 +28,10 @@ var businesscommunications_v1;
      *
      *
      * @example
+     * ```js
      * const {google} = require('googleapis');
      * const businesscommunications = google.businesscommunications('v1');
-     *
-     * @namespace businesscommunications
-     * @type {Function}
-     * @version v1
-     * @variation v1
-     * @param {object=} options Options for Businesscommunications
+     * ```
      */
     class Businesscommunications {
         constructor(options, google) {
@@ -936,4 +932,3 @@ var businesscommunications_v1;
     }
     businesscommunications_v1.Resource$Partners = Resource$Partners;
 })(businesscommunications_v1 = exports.businesscommunications_v1 || (exports.businesscommunications_v1 = {}));
-//# sourceMappingURL=v1.js.map

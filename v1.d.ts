@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { OAuth2Client, JWT, Compute, UserRefreshClient, GaxiosPromise, GoogleConfigurable, MethodOptions, StreamMethodOptions, GlobalOptions, GoogleAuth, BodyResponseCallback, APIRequestContext } from 'googleapis-common';
+import { OAuth2Client, JWT, Compute, UserRefreshClient, BaseExternalAccountClient, GaxiosPromise, GoogleConfigurable, MethodOptions, StreamMethodOptions, GlobalOptions, GoogleAuth, BodyResponseCallback, APIRequestContext } from 'googleapis-common';
 import { Readable } from 'stream';
 export declare namespace businesscommunications_v1 {
     export interface Options extends GlobalOptions {
@@ -9,7 +9,7 @@ export declare namespace businesscommunications_v1 {
         /**
          * Auth client or API Key for the request
          */
-        auth?: string | OAuth2Client | JWT | Compute | UserRefreshClient | GoogleAuth;
+        auth?: string | OAuth2Client | JWT | Compute | UserRefreshClient | BaseExternalAccountClient | GoogleAuth;
         /**
          * V1 error format.
          */
@@ -61,14 +61,10 @@ export declare namespace businesscommunications_v1 {
      *
      *
      * @example
+     * ```js
      * const {google} = require('googleapis');
      * const businesscommunications = google.businesscommunications('v1');
-     *
-     * @namespace businesscommunications
-     * @type {Function}
-     * @version v1
-     * @variation v1
-     * @param {object=} options Options for Businesscommunications
+     * ```
      */
     export class Businesscommunications {
         context: APIRequestContext;
@@ -85,13 +81,17 @@ export declare namespace businesscommunications_v1 {
          */
         businessMessagesAgent?: Schema$BusinessMessagesAgent;
         /**
-         * Required. The name that the agent displays to users. Maximum 40 characters. Not modifiable after agent verification.
+         * Required. The name that the agent displays to users. Maximum 100 characters. Not modifiable after agent verification.
          */
         displayName?: string | null;
         /**
          * The unique identifier of the agent. Read-only. Defined by the platform.
          */
         name?: string | null;
+        /**
+         * Detailed agent information for Verified Calls.
+         */
+        verifiedCallsAgent?: Schema$VerifiedCallsAgent;
         /**
          * Detailed agent information for Verified SMS.
          */
@@ -102,13 +102,17 @@ export declare namespace businesscommunications_v1 {
      */
     export interface Schema$AgentLaunch {
         /**
-         * Launch details for business messages agent.
+         * Launch details for a Business Messages agent.
          */
         businessMessages?: Schema$BusinessMessagesLaunch;
         /**
          * Required. The identifier for launch.
          */
         name?: string | null;
+        /**
+         * Launch details for a Verified Calls agent.
+         */
+        verifiedCalls?: Schema$VerifiedCallsLaunch;
     }
     /**
      * Details about the verification information for an agent.
@@ -153,6 +157,28 @@ export declare namespace businesscommunications_v1 {
         partnerName?: string | null;
     }
     /**
+     * Approval details composed from the state and optional additional information.
+     */
+    export interface Schema$ApprovalDetails {
+        /**
+         * Output only. Additional information about the decision, if available.
+         */
+        approvalInfo?: string | null;
+        /**
+         * Output only. The current approval state.
+         */
+        approvalState?: string | null;
+    }
+    /**
+     * Configuration details for supporting OAuth on Business Messages.
+     */
+    export interface Schema$AuthorizationConfig {
+        /**
+         * The endpoint URL where the user logs in.
+         */
+        endpointUrl?: string | null;
+    }
+    /**
      * Details for bot representative.
      */
     export interface Schema$BotRepresentative {
@@ -183,9 +209,13 @@ export declare namespace businesscommunications_v1 {
          */
         additionalAgentInteractions?: Schema$SupportedAgentInteraction[];
         /**
-         * Output only. The URL for testing the agent&#39;s conversational experience. Defined by the platform.
+         * Output only. The URL for testing the agent's conversational experience. Defined by the platform.
          */
         agentTestUrl?: string | null;
+        /**
+         * Optional. Authorization configuration for OAuth support.
+         */
+        authorizationConfig?: Schema$AuthorizationConfig;
         /**
          * Required. Conversational settings for an agent, mapped to a locale. Locale is represented by a well-formed [IETF BCP 47](https://tools.ietf.org/html/bcp47) language tag.
          */
@@ -209,6 +239,10 @@ export declare namespace businesscommunications_v1 {
          */
         logoUrl?: string | null;
         /**
+         * Optional. Configuration for non-local entry points.
+         */
+        nonLocalConfig?: Schema$NonLocalConfig;
+        /**
          * Optional. The phone number for the agent to display. If not specified, the agent displays the phone number for the brand found in the [Google Knowledge Graph](https://developers.google.com/knowledge-graph), if any.
          */
         phone?: Schema$Phone;
@@ -217,7 +251,11 @@ export declare namespace businesscommunications_v1 {
          */
         primaryAgentInteraction?: Schema$SupportedAgentInteraction;
         /**
-         * Output only. URLs for testing the agent&#39;s conversational experience. Defined by the platform.
+         * Optional. Configuration to enable custom surveys.
+         */
+        surveyConfig?: Schema$SurveyConfig;
+        /**
+         * Output only. URLs for testing the agent's conversational experience. Defined by the platform.
          */
         testUrls?: Schema$TestUrl[];
     }
@@ -251,9 +289,13 @@ export declare namespace businesscommunications_v1 {
          * The launch state for entry point.
          */
         launchState?: string | null;
+        /**
+         * List of [CLDR region codes](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) for countries where the agent should launch `NON_LOCAL` entry points. Required for `NON_LOCAL` entry points. This must be a subset of the region codes specified in the agent's `nonLocalConfig`.
+         */
+        regionCodes?: string[] | null;
     }
     /**
-     * Details about business messages agent launch.
+     * Details about a Business Messages agent launch.
      */
     export interface Schema$BusinessMessagesLaunch {
         /**
@@ -264,11 +306,37 @@ export declare namespace businesscommunications_v1 {
         } | null;
     }
     /**
+     * Call reason with approval information.
+     */
+    export interface Schema$CallReason {
+        /**
+         * Output only. Approval details; each call reason must be approved before use.
+         */
+        approvalDetails?: Schema$ApprovalDetails;
+        /**
+         * Immutable. The actual text of the call reason.
+         */
+        text?: string | null;
+    }
+    /**
+     * Contact details displayed in addition to the messaging button.
+     */
+    export interface Schema$ContactOption {
+        /**
+         * Required. The list of contact options available for the specified URL.
+         */
+        options?: string[] | null;
+        /**
+         * Required. The URL that contact options are available for.
+         */
+        url?: string | null;
+    }
+    /**
      * Conversational setting for an agent or location. Each locale has its own conversational settings. Locale is represented by a well-formed [IETF BCP 47](https://tools.ietf.org/html/bcp47) language tag.
      */
     export interface Schema$ConversationalSetting {
         /**
-         * Optional. Details about the agent&#39;s conversation starters. Maximum 5.
+         * Optional. Details about the agent's conversation starters. Maximum 5.
          */
         conversationStarters?: Schema$ConversationStarters[];
         /**
@@ -276,7 +344,7 @@ export declare namespace businesscommunications_v1 {
          */
         offlineMessage?: Schema$OfflineMessage;
         /**
-         * Required. Details about the agent&#39;s privacy policy.
+         * Required. Details about the agent's privacy policy.
          */
         privacyPolicy?: Schema$PrivacyPolicy;
         /**
@@ -294,7 +362,16 @@ export declare namespace businesscommunications_v1 {
         suggestion?: Schema$Suggestion;
     }
     /**
-     * A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); } The JSON representation for `Empty` is empty JSON object `{}`.
+     * Custom survey configuration for an agent.
+     */
+    export interface Schema$CustomSurveyConfig {
+        /**
+         * List of custom questions.
+         */
+        customQuestions?: Schema$SurveyQuestion[];
+    }
+    /**
+     * A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); \} The JSON representation for `Empty` is empty JSON object `{\}`.
      */
     export interface Schema$Empty {
     }
@@ -319,7 +396,7 @@ export declare namespace businesscommunications_v1 {
          */
         startTime?: Schema$TimeOfDay;
         /**
-         * Required. The [IANA time zone](https://www.iana.org/time-zones) for the hours. For example, &quot;America/Los_Angeles&quot;.
+         * Required. The [IANA time zone](https://www.iana.org/time-zones) for the hours. For example, "America/Los_Angeles".
          */
         timeZone?: string | null;
     }
@@ -341,7 +418,7 @@ export declare namespace businesscommunications_v1 {
          */
         agents?: Schema$Agent[];
         /**
-         * The pagination token to retrieve the next page of results. If the value is &quot;&quot;, it means no further results for the request.
+         * The pagination token to retrieve the next page of results. If the value is "", it means no further results for the request.
          */
         nextPageToken?: string | null;
     }
@@ -354,7 +431,7 @@ export declare namespace businesscommunications_v1 {
          */
         brands?: Schema$Brand[];
         /**
-         * The pagination token to retrieve the next page of results. If the value is &quot;&quot;, it means no further results for the request.
+         * The pagination token to retrieve the next page of results. If the value is "", it means no further results for the request.
          */
         nextPageToken?: string | null;
     }
@@ -367,7 +444,7 @@ export declare namespace businesscommunications_v1 {
          */
         locations?: Schema$Location[];
         /**
-         * The pagination token to retrieve the next page of results. If the value is &quot;&quot;, it means no further results for the request.
+         * The pagination token to retrieve the next page of results. If the value is "", it means no further results for the request.
          */
         nextPageToken?: string | null;
     }
@@ -376,7 +453,7 @@ export declare namespace businesscommunications_v1 {
      */
     export interface Schema$Location {
         /**
-         * Required. The name of the agent associated with the location. If the brand identifier is &quot;1234&quot; and the agent identifier is &quot;5678&quot;, this field resolves to &quot;brands/1234/agents/5678&quot;.
+         * Required. The name of the agent associated with the location. If the brand identifier is "1234" and the agent identifier is "5678", this field resolves to "brands/1234/agents/5678".
          */
         agent?: string | null;
         /**
@@ -390,11 +467,15 @@ export declare namespace businesscommunications_v1 {
          */
         defaultLocale?: string | null;
         /**
+         * Output only. Identifies the Google My Business Listing this Location is associated with.
+         */
+        listingId?: string | null;
+        /**
          * Required. List of entry point configurations for locations. Not modifiable after being available to users through an agent.
          */
         locationEntryPointConfigs?: Schema$LocationEntryPointConfig[];
         /**
-         * Output only. The URL for testing the location&#39;s conversational experience. Defined by the platform.
+         * Output only. The URL for testing the location's conversational experience. Defined by the platform.
          */
         locationTestUrl?: string | null;
         /**
@@ -406,7 +487,7 @@ export declare namespace businesscommunications_v1 {
          */
         placeId?: string | null;
         /**
-         * Output only. URLs for testing the location&#39;s conversational experience. Defined by the platform.
+         * Output only. URLs for testing the location's conversational experience. Defined by the platform.
          */
         testUrls?: Schema$TestUrl[];
     }
@@ -455,11 +536,36 @@ export declare namespace businesscommunications_v1 {
         hours?: Schema$Hours[];
     }
     /**
+     * Configuration to enable non-local entry points.
+     */
+    export interface Schema$NonLocalConfig {
+        /**
+         * Required. List of phone numbers for call deflection.
+         */
+        callDeflectionPhoneNumbers?: Schema$Phone[];
+        /**
+         * Required. Contact information for the agent that displays with the messaging button.
+         */
+        contactOption?: Schema$ContactOption;
+        /**
+         * Required. Domains to enable the Business Messages widget and the sitelinks entry point.
+         */
+        enabledDomains?: string[] | null;
+        /**
+         * Required. Agent's phone number. Overrides the `phone` field for conversations started from non-local entry points. This phone number will be used for all configured regions.
+         */
+        phoneNumber?: Schema$Phone;
+        /**
+         * Required. List of [CLDR region codes](https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry) for countries where the agent is allowed to launch `NON_LOCAL` entry points. Required for `NON_LOCAL` entry points.
+         */
+        regionCodes?: string[] | null;
+    }
+    /**
      * The greeting shown to users when they enter a conversation with the agent outside the chat hours.
      */
     export interface Schema$OfflineMessage {
         /**
-         * The text of the offline message.
+         * The text of the offline message. Maximum length 1000 characters.
          */
         text?: string | null;
     }
@@ -502,7 +608,7 @@ export declare namespace businesscommunications_v1 {
      */
     export interface Schema$Phone {
         /**
-         * Required. Phone number in E.164 format. For example, &quot;+12223334444&quot;.
+         * Required. Phone number in E.164 format. For example, "+12223334444".
          */
         number?: string | null;
     }
@@ -527,6 +633,10 @@ export declare namespace businesscommunications_v1 {
          * The product supported by the partner.
          */
         product?: string | null;
+        /**
+         * Verified SMS capability.
+         */
+        verifiedSmsCapability?: Schema$VerifiedSmsCapability;
     }
     /**
      * Request to launch an agent.
@@ -561,7 +671,7 @@ export declare namespace businesscommunications_v1 {
      */
     export interface Schema$Sender {
         /**
-         * A country the sender ID operates in as an [ISO 3166 Alpha-2 country code](https://www.iso.org/obp/ui/#search/code/). For example, &quot;US&quot; for the United States of America.
+         * A country the sender ID operates in as an [ISO 3166 Alpha-2 country code](https://www.iso.org/obp/ui/#search/code/). For example, "US" for the United States of America.
          */
         countryCode?: string | null;
         /**
@@ -630,6 +740,55 @@ export declare namespace businesscommunications_v1 {
         interactionType?: string | null;
     }
     /**
+     * Configuration details for supporting customized survey questions.
+     */
+    export interface Schema$SurveyConfig {
+        /**
+         * Custom survey questions for an agent, mapped to a locale. Locale is represented by a well-formed [IETF BCP 47](https://tools.ietf.org/html/bcp47) language tag.
+         */
+        customSurveys?: {
+            [key: string]: Schema$CustomSurveyConfig;
+        } | null;
+        /**
+         * List of template question IDs for template questions included in a survey.
+         */
+        templateQuestionIds?: string[] | null;
+    }
+    /**
+     * The detailed content of each survey question.
+     */
+    export interface Schema$SurveyQuestion {
+        /**
+         * Required. The unique identifier of the question.
+         */
+        name?: string | null;
+        /**
+         * Required. Question content. Limited to 200 characters for custom questions.
+         */
+        questionContent?: string | null;
+        /**
+         * Output only. Type of the question.
+         */
+        questionType?: string | null;
+        /**
+         * Required. List of responses displayed with the question. Maximum 12.
+         */
+        responseOptions?: Schema$SurveyResponse[];
+    }
+    /**
+     * The content for a survey question response.
+     */
+    export interface Schema$SurveyResponse {
+        /**
+         * Required. Text that is shown in the survey and sent back to the agent when the user taps it. Maximum 35 characters.
+         */
+        content?: string | null;
+        /**
+         * The string the agent receives when the user taps the question response.
+         */
+        postbackData?: string | null;
+    }
+    /**
      * Test intent for supported conversational surfaces.
      */
     export interface Schema$TestUrl {
@@ -647,7 +806,7 @@ export declare namespace businesscommunications_v1 {
      */
     export interface Schema$TimeOfDay {
         /**
-         * Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value &quot;24:00:00&quot; for scenarios like business closing time.
+         * Hours of day in 24 hour format. Should be from 0 to 23. An API may choose to allow the value "24:00:00" for scenarios like business closing time.
          */
         hours?: number | null;
         /**
@@ -662,6 +821,45 @@ export declare namespace businesscommunications_v1 {
          * Seconds of minutes of the time. Must normally be from 0 to 59. An API may allow the value 60 if it allows leap-seconds.
          */
         seconds?: number | null;
+    }
+    /**
+     * Agent information specifically related to Verified Calls.
+     */
+    export interface Schema$VerifiedCallsAgent {
+        /**
+         * Required. Call reasons that this agent may use when placing a verified call. Only add / remove actions are allowed. Each action will be reviewed before the change takes place.
+         */
+        callReasons?: Schema$CallReason[];
+        /**
+         * Required. Publicly available URL of the agent logo to display with a verified call. Maximum 50 KB. Not modifiable after agent verification.
+         */
+        logoUrl?: string | null;
+        /**
+         * Required. Phone numbers that this agent may use when placing a verified call. Only add / remove actions are allowed. Each action will be reviewed before the change takes place.
+         */
+        phones?: Schema$VerifiedCallsPhone[];
+    }
+    /**
+     * Details about Verified Calls agent launch.
+     */
+    export interface Schema$VerifiedCallsLaunch {
+        /**
+         * The launch state.
+         */
+        launchState?: string | null;
+    }
+    /**
+     * Phone number with approval information.
+     */
+    export interface Schema$VerifiedCallsPhone {
+        /**
+         * Output only. Approval details, each phone number must be approved before use.
+         */
+        approvalDetails?: Schema$ApprovalDetails;
+        /**
+         * Immutable. Phone number in E.164 format i.e. +18888888888
+         */
+        number?: string | null;
     }
     /**
      * Agent information specific to Verified SMS.
@@ -681,11 +879,20 @@ export declare namespace businesscommunications_v1 {
         senders?: Schema$Sender[];
     }
     /**
+     * Verified SMS capabilities
+     */
+    export interface Schema$VerifiedSmsCapability {
+        /**
+         * Required. The webhook URL where the Verified SMS callbacks are delivered.
+         */
+        webhookUrl?: string | null;
+    }
+    /**
      * The greeting shown to users when they enter a conversation with the agent for the first time.
      */
     export interface Schema$WelcomeMessage {
         /**
-         * Required. The text of the welcome message.
+         * Required. The text of the welcome message. Maximum length 1000 characters.
          */
         text?: string | null;
     }
@@ -695,9 +902,9 @@ export declare namespace businesscommunications_v1 {
         locations: Resource$Brands$Locations;
         constructor(context: APIRequestContext);
         /**
-         * businesscommunications.brands.create
-         * @desc Creates a new brand.
+         * Creates a new brand.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -744,14 +951,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.create
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {().Brand} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         create(params: Params$Resource$Brands$Create, options: StreamMethodOptions): GaxiosPromise<Readable>;
         create(params?: Params$Resource$Brands$Create, options?: MethodOptions): GaxiosPromise<Schema$Brand>;
@@ -760,9 +965,9 @@ export declare namespace businesscommunications_v1 {
         create(params: Params$Resource$Brands$Create, callback: BodyResponseCallback<Schema$Brand>): void;
         create(callback: BodyResponseCallback<Schema$Brand>): void;
         /**
-         * businesscommunications.brands.delete
-         * @desc Deletes a brand. If the brand has any associated agents or locations, the delete request fails unless `force` is `true`.
+         * Deletes a brand. If the brand has any associated agents or locations, the delete request fails unless `force` is `true`.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -802,15 +1007,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.delete
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {boolean=} params.force If true, any agents and locations associated with this brand are also deleted.
-         * @param {string} params.name Required. The unique identifier of the brand. If the brand identifier is "1234", this parameter resolves to "brands/1234".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         delete(params: Params$Resource$Brands$Delete, options: StreamMethodOptions): GaxiosPromise<Readable>;
         delete(params?: Params$Resource$Brands$Delete, options?: MethodOptions): GaxiosPromise<Schema$Empty>;
@@ -819,9 +1021,9 @@ export declare namespace businesscommunications_v1 {
         delete(params: Params$Resource$Brands$Delete, callback: BodyResponseCallback<Schema$Empty>): void;
         delete(callback: BodyResponseCallback<Schema$Empty>): void;
         /**
-         * businesscommunications.brands.get
-         * @desc Gets information about a brand.
+         * Gets information about a brand.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -862,14 +1064,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.get
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the brand. If the brand identifier is "1234", this parameter resolves to "brands/1234".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         get(params: Params$Resource$Brands$Get, options: StreamMethodOptions): GaxiosPromise<Readable>;
         get(params?: Params$Resource$Brands$Get, options?: MethodOptions): GaxiosPromise<Schema$Brand>;
@@ -878,9 +1078,9 @@ export declare namespace businesscommunications_v1 {
         get(params: Params$Resource$Brands$Get, callback: BodyResponseCallback<Schema$Brand>): void;
         get(callback: BodyResponseCallback<Schema$Brand>): void;
         /**
-         * businesscommunications.brands.list
-         * @desc Lists all the brands accessible to the user making the request. *Note*: This method always sets `pageSize` to `0`.
+         * Lists all the brands accessible to the user making the request. *Note*: This method always sets `pageSize` to `0`.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -923,15 +1123,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.list
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {integer=} params.pageSize Specify the maximum number of results to be returned by the server. The server may further constrain the maximum number of results returned in a single page. If the page_size is 0, the server will decide the number of results to be returned.
-         * @param {string=} params.pageToken The next_page_token value returned from a previous List request, if any.
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         list(params: Params$Resource$Brands$List, options: StreamMethodOptions): GaxiosPromise<Readable>;
         list(params?: Params$Resource$Brands$List, options?: MethodOptions): GaxiosPromise<Schema$ListBrandsResponse>;
@@ -940,9 +1137,9 @@ export declare namespace businesscommunications_v1 {
         list(params: Params$Resource$Brands$List, callback: BodyResponseCallback<Schema$ListBrandsResponse>): void;
         list(callback: BodyResponseCallback<Schema$ListBrandsResponse>): void;
         /**
-         * businesscommunications.brands.patch
-         * @desc Updates information about a brand. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
+         * Updates information about a brand. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -994,16 +1191,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.patch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Output only. The unique identifier of the brand. Defined by the platform.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().Brand} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         patch(params: Params$Resource$Brands$Patch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         patch(params?: Params$Resource$Brands$Patch, options?: MethodOptions): GaxiosPromise<Schema$Brand>;
@@ -1062,9 +1255,9 @@ export declare namespace businesscommunications_v1 {
         context: APIRequestContext;
         constructor(context: APIRequestContext);
         /**
-         * businesscommunications.brands.agents.create
-         * @desc Creates a new agent to represent a brand.
+         * Creates a new agent to represent a brand.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1098,7 +1291,8 @@ export declare namespace businesscommunications_v1 {
          *       //   "name": "my_name",
          *       //   "displayName": "my_displayName",
          *       //   "verifiedSmsAgent": {},
-         *       //   "businessMessagesAgent": {}
+         *       //   "businessMessagesAgent": {},
+         *       //   "verifiedCallsAgent": {}
          *       // }
          *     },
          *   });
@@ -1109,7 +1303,8 @@ export declare namespace businesscommunications_v1 {
          *   //   "name": "my_name",
          *   //   "displayName": "my_displayName",
          *   //   "verifiedSmsAgent": {},
-         *   //   "businessMessagesAgent": {}
+         *   //   "businessMessagesAgent": {},
+         *   //   "verifiedCallsAgent": {}
          *   // }
          * }
          *
@@ -1118,15 +1313,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.create
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.parent Required. The unique identifier of the brand the agent represents. If the brand identifier is "1234", this parameter is "brands/1234".
-         * @param {().Agent} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         create(params: Params$Resource$Brands$Agents$Create, options: StreamMethodOptions): GaxiosPromise<Readable>;
         create(params?: Params$Resource$Brands$Agents$Create, options?: MethodOptions): GaxiosPromise<Schema$Agent>;
@@ -1135,9 +1327,9 @@ export declare namespace businesscommunications_v1 {
         create(params: Params$Resource$Brands$Agents$Create, callback: BodyResponseCallback<Schema$Agent>): void;
         create(callback: BodyResponseCallback<Schema$Agent>): void;
         /**
-         * businesscommunications.brands.agents.delete
-         * @desc Deletes an agent. The delete request fails if any `brands.agents.requestVerification` requests have been made for the agent.
+         * Deletes an agent. The delete request fails if any `brands.agents.requestVerification` requests have been made for the agent.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1175,14 +1367,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.delete
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5668".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         delete(params: Params$Resource$Brands$Agents$Delete, options: StreamMethodOptions): GaxiosPromise<Readable>;
         delete(params?: Params$Resource$Brands$Agents$Delete, options?: MethodOptions): GaxiosPromise<Schema$Empty>;
@@ -1191,9 +1381,9 @@ export declare namespace businesscommunications_v1 {
         delete(params: Params$Resource$Brands$Agents$Delete, callback: BodyResponseCallback<Schema$Empty>): void;
         delete(callback: BodyResponseCallback<Schema$Empty>): void;
         /**
-         * businesscommunications.brands.agents.get
-         * @desc Get information about an agent.
+         * Get information about an agent.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1227,7 +1417,8 @@ export declare namespace businesscommunications_v1 {
          *   //   "name": "my_name",
          *   //   "displayName": "my_displayName",
          *   //   "verifiedSmsAgent": {},
-         *   //   "businessMessagesAgent": {}
+         *   //   "businessMessagesAgent": {},
+         *   //   "verifiedCallsAgent": {}
          *   // }
          * }
          *
@@ -1236,14 +1427,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.get
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5668".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         get(params: Params$Resource$Brands$Agents$Get, options: StreamMethodOptions): GaxiosPromise<Readable>;
         get(params?: Params$Resource$Brands$Agents$Get, options?: MethodOptions): GaxiosPromise<Schema$Agent>;
@@ -1252,9 +1441,9 @@ export declare namespace businesscommunications_v1 {
         get(params: Params$Resource$Brands$Agents$Get, callback: BodyResponseCallback<Schema$Agent>): void;
         get(callback: BodyResponseCallback<Schema$Agent>): void;
         /**
-         * businesscommunications.brands.agents.getLaunch
-         * @desc Gets the launch information for an agent.
+         * Gets the launch information for an agent.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1286,7 +1475,8 @@ export declare namespace businesscommunications_v1 {
          *   // Example response
          *   // {
          *   //   "name": "my_name",
-         *   //   "businessMessages": {}
+         *   //   "businessMessages": {},
+         *   //   "verifiedCalls": {}
          *   // }
          * }
          *
@@ -1295,14 +1485,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.getLaunch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the agent launch.
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         getLaunch(params: Params$Resource$Brands$Agents$Getlaunch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         getLaunch(params?: Params$Resource$Brands$Agents$Getlaunch, options?: MethodOptions): GaxiosPromise<Schema$AgentLaunch>;
@@ -1311,9 +1499,9 @@ export declare namespace businesscommunications_v1 {
         getLaunch(params: Params$Resource$Brands$Agents$Getlaunch, callback: BodyResponseCallback<Schema$AgentLaunch>): void;
         getLaunch(callback: BodyResponseCallback<Schema$AgentLaunch>): void;
         /**
-         * businesscommunications.brands.agents.getVerification
-         * @desc Gets the verification information for an agent.
+         * Gets the verification information for an agent.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1355,14 +1543,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.getVerification
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the brand and agent verification.
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         getVerification(params: Params$Resource$Brands$Agents$Getverification, options: StreamMethodOptions): GaxiosPromise<Readable>;
         getVerification(params?: Params$Resource$Brands$Agents$Getverification, options?: MethodOptions): GaxiosPromise<Schema$AgentVerification>;
@@ -1371,9 +1557,9 @@ export declare namespace businesscommunications_v1 {
         getVerification(params: Params$Resource$Brands$Agents$Getverification, callback: BodyResponseCallback<Schema$AgentVerification>): void;
         getVerification(callback: BodyResponseCallback<Schema$AgentVerification>): void;
         /**
-         * businesscommunications.brands.agents.list
-         * @desc Lists all the agents associated with a brand. *Note*: This method always sets `pageSize` to `0`.
+         * Lists all the agents associated with a brand. *Note*: This method always sets `pageSize` to `0`.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1418,16 +1604,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.list
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {integer=} params.pageSize Specify the maximum number of results to be returned by the server. The server may further constrain the maximum number of results returned in a single page. If the page_size is 0, the server will decide the number of results to be returned.
-         * @param {string=} params.pageToken The next_page_token value returned from a previous List request, if any.
-         * @param {string} params.parent Required. The unique identifier of the brand. If the brand identifier is "1234", this parameter resolves to "brands/1234".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         list(params: Params$Resource$Brands$Agents$List, options: StreamMethodOptions): GaxiosPromise<Readable>;
         list(params?: Params$Resource$Brands$Agents$List, options?: MethodOptions): GaxiosPromise<Schema$ListAgentsResponse>;
@@ -1436,9 +1618,9 @@ export declare namespace businesscommunications_v1 {
         list(params: Params$Resource$Brands$Agents$List, callback: BodyResponseCallback<Schema$ListAgentsResponse>): void;
         list(callback: BodyResponseCallback<Schema$ListAgentsResponse>): void;
         /**
-         * businesscommunications.brands.agents.patch
-         * @desc Updates information about an agent. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
+         * Updates information about an agent. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1474,7 +1656,8 @@ export declare namespace businesscommunications_v1 {
          *       //   "name": "my_name",
          *       //   "displayName": "my_displayName",
          *       //   "verifiedSmsAgent": {},
-         *       //   "businessMessagesAgent": {}
+         *       //   "businessMessagesAgent": {},
+         *       //   "verifiedCallsAgent": {}
          *       // }
          *     },
          *   });
@@ -1485,7 +1668,8 @@ export declare namespace businesscommunications_v1 {
          *   //   "name": "my_name",
          *   //   "displayName": "my_displayName",
          *   //   "verifiedSmsAgent": {},
-         *   //   "businessMessagesAgent": {}
+         *   //   "businessMessagesAgent": {},
+         *   //   "verifiedCallsAgent": {}
          *   // }
          * }
          *
@@ -1494,16 +1678,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.patch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name The unique identifier of the agent. Read-only. Defined by the platform.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().Agent} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         patch(params: Params$Resource$Brands$Agents$Patch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         patch(params?: Params$Resource$Brands$Agents$Patch, options?: MethodOptions): GaxiosPromise<Schema$Agent>;
@@ -1512,9 +1692,9 @@ export declare namespace businesscommunications_v1 {
         patch(params: Params$Resource$Brands$Agents$Patch, callback: BodyResponseCallback<Schema$Agent>): void;
         patch(callback: BodyResponseCallback<Schema$Agent>): void;
         /**
-         * businesscommunications.brands.agents.requestLaunch
-         * @desc Begins the launch process for an agent. An agent is available to users after it launches. An agent can only have one instance of launch at a time.
+         * Begins the launch process for an agent. An agent is available to users after it launches. An agent can only have one instance of launch at a time.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1554,7 +1734,8 @@ export declare namespace businesscommunications_v1 {
          *   // Example response
          *   // {
          *   //   "name": "my_name",
-         *   //   "businessMessages": {}
+         *   //   "businessMessages": {},
+         *   //   "verifiedCalls": {}
          *   // }
          * }
          *
@@ -1563,15 +1744,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.requestLaunch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5678".
-         * @param {().RequestAgentLaunchRequest} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         requestLaunch(params: Params$Resource$Brands$Agents$Requestlaunch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         requestLaunch(params?: Params$Resource$Brands$Agents$Requestlaunch, options?: MethodOptions): GaxiosPromise<Schema$AgentLaunch>;
@@ -1580,9 +1758,9 @@ export declare namespace businesscommunications_v1 {
         requestLaunch(params: Params$Resource$Brands$Agents$Requestlaunch, callback: BodyResponseCallback<Schema$AgentLaunch>): void;
         requestLaunch(callback: BodyResponseCallback<Schema$AgentLaunch>): void;
         /**
-         * businesscommunications.brands.agents.requestVerification
-         * @desc Begins business information verification for an agent. Google contacts the brand for verification. Only 1 instance of verification is allowed at any given time.
+         * Begins business information verification for an agent. Google contacts the brand for verification. Only 1 instance of verification is allowed at any given time.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1632,15 +1810,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.requestVerification
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the brand and agent.
-         * @param {().RequestAgentVerificationRequest} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         requestVerification(params: Params$Resource$Brands$Agents$Requestverification, options: StreamMethodOptions): GaxiosPromise<Readable>;
         requestVerification(params?: Params$Resource$Brands$Agents$Requestverification, options?: MethodOptions): GaxiosPromise<Schema$AgentVerification>;
@@ -1649,9 +1824,9 @@ export declare namespace businesscommunications_v1 {
         requestVerification(params: Params$Resource$Brands$Agents$Requestverification, callback: BodyResponseCallback<Schema$AgentVerification>): void;
         requestVerification(callback: BodyResponseCallback<Schema$AgentVerification>): void;
         /**
-         * businesscommunications.brands.agents.updateLaunch
-         * @desc Updates the launch information for an agent.
+         * Updates the launch information for an agent.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1685,7 +1860,8 @@ export declare namespace businesscommunications_v1 {
          *       // request body parameters
          *       // {
          *       //   "name": "my_name",
-         *       //   "businessMessages": {}
+         *       //   "businessMessages": {},
+         *       //   "verifiedCalls": {}
          *       // }
          *     },
          *   });
@@ -1694,7 +1870,8 @@ export declare namespace businesscommunications_v1 {
          *   // Example response
          *   // {
          *   //   "name": "my_name",
-         *   //   "businessMessages": {}
+         *   //   "businessMessages": {},
+         *   //   "verifiedCalls": {}
          *   // }
          * }
          *
@@ -1703,16 +1880,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.updateLaunch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The identifier for launch.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().AgentLaunch} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         updateLaunch(params: Params$Resource$Brands$Agents$Updatelaunch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         updateLaunch(params?: Params$Resource$Brands$Agents$Updatelaunch, options?: MethodOptions): GaxiosPromise<Schema$AgentLaunch>;
@@ -1721,9 +1894,9 @@ export declare namespace businesscommunications_v1 {
         updateLaunch(params: Params$Resource$Brands$Agents$Updatelaunch, callback: BodyResponseCallback<Schema$AgentLaunch>): void;
         updateLaunch(callback: BodyResponseCallback<Schema$AgentLaunch>): void;
         /**
-         * businesscommunications.brands.agents.updateVerification
-         * @desc Updates the verification state for an agent.
+         * Updates the verification state for an agent.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1777,16 +1950,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.agents.updateVerification
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The identifier for verification.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().AgentVerification} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         updateVerification(params: Params$Resource$Brands$Agents$Updateverification, options: StreamMethodOptions): GaxiosPromise<Readable>;
         updateVerification(params?: Params$Resource$Brands$Agents$Updateverification, options?: MethodOptions): GaxiosPromise<Schema$AgentVerification>;
@@ -1909,9 +2078,9 @@ export declare namespace businesscommunications_v1 {
         context: APIRequestContext;
         constructor(context: APIRequestContext);
         /**
-         * businesscommunications.brands.locations.create
-         * @desc Creates a new location for a brand.
+         * Creates a new location for a brand.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -1949,7 +2118,8 @@ export declare namespace businesscommunications_v1 {
          *       //   "locationTestUrl": "my_locationTestUrl",
          *       //   "testUrls": [],
          *       //   "conversationalSettings": {},
-         *       //   "defaultLocale": "my_defaultLocale"
+         *       //   "defaultLocale": "my_defaultLocale",
+         *       //   "listingId": "my_listingId"
          *       // }
          *     },
          *   });
@@ -1964,7 +2134,8 @@ export declare namespace businesscommunications_v1 {
          *   //   "locationTestUrl": "my_locationTestUrl",
          *   //   "testUrls": [],
          *   //   "conversationalSettings": {},
-         *   //   "defaultLocale": "my_defaultLocale"
+         *   //   "defaultLocale": "my_defaultLocale",
+         *   //   "listingId": "my_listingId"
          *   // }
          * }
          *
@@ -1973,15 +2144,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.create
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.parent Required. The unique identifier of the brand associated with the location. If the brand identifier is "1234", this parameter resolves to "brands/1234".
-         * @param {().Location} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         create(params: Params$Resource$Brands$Locations$Create, options: StreamMethodOptions): GaxiosPromise<Readable>;
         create(params?: Params$Resource$Brands$Locations$Create, options?: MethodOptions): GaxiosPromise<Schema$Location>;
@@ -1990,9 +2158,9 @@ export declare namespace businesscommunications_v1 {
         create(params: Params$Resource$Brands$Locations$Create, callback: BodyResponseCallback<Schema$Location>): void;
         create(callback: BodyResponseCallback<Schema$Location>): void;
         /**
-         * businesscommunications.brands.locations.delete
-         * @desc Deletes a location. The delete request fails if any `brands.locations.requestVerification` requests have been made for the location.
+         * Deletes a location. The delete request fails if any `brands.locations.requestVerification` requests have been made for the location.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2030,14 +2198,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.delete
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the location. If the brand identifier is "1234" and the location identifier is "5678", this parameter resolves to "brands/1234/locations/5678".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         delete(params: Params$Resource$Brands$Locations$Delete, options: StreamMethodOptions): GaxiosPromise<Readable>;
         delete(params?: Params$Resource$Brands$Locations$Delete, options?: MethodOptions): GaxiosPromise<Schema$Empty>;
@@ -2046,9 +2212,9 @@ export declare namespace businesscommunications_v1 {
         delete(params: Params$Resource$Brands$Locations$Delete, callback: BodyResponseCallback<Schema$Empty>): void;
         delete(callback: BodyResponseCallback<Schema$Empty>): void;
         /**
-         * businesscommunications.brands.locations.get
-         * @desc Get information about a location.
+         * Get information about a location.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2086,7 +2252,8 @@ export declare namespace businesscommunications_v1 {
          *   //   "locationTestUrl": "my_locationTestUrl",
          *   //   "testUrls": [],
          *   //   "conversationalSettings": {},
-         *   //   "defaultLocale": "my_defaultLocale"
+         *   //   "defaultLocale": "my_defaultLocale",
+         *   //   "listingId": "my_listingId"
          *   // }
          * }
          *
@@ -2095,14 +2262,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.get
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the location. If the brand identifier is "1234" and the location identifier is "5678", this parameter resolves to "brands/1234/locations/5678".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         get(params: Params$Resource$Brands$Locations$Get, options: StreamMethodOptions): GaxiosPromise<Readable>;
         get(params?: Params$Resource$Brands$Locations$Get, options?: MethodOptions): GaxiosPromise<Schema$Location>;
@@ -2111,9 +2276,9 @@ export declare namespace businesscommunications_v1 {
         get(params: Params$Resource$Brands$Locations$Get, callback: BodyResponseCallback<Schema$Location>): void;
         get(callback: BodyResponseCallback<Schema$Location>): void;
         /**
-         * businesscommunications.brands.locations.getLaunch
-         * @desc Gets the launch information for a location.
+         * Gets the launch information for a location.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2154,14 +2319,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.getLaunch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the location launch.
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         getLaunch(params: Params$Resource$Brands$Locations$Getlaunch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         getLaunch(params?: Params$Resource$Brands$Locations$Getlaunch, options?: MethodOptions): GaxiosPromise<Schema$LocationLaunch>;
@@ -2170,9 +2333,9 @@ export declare namespace businesscommunications_v1 {
         getLaunch(params: Params$Resource$Brands$Locations$Getlaunch, callback: BodyResponseCallback<Schema$LocationLaunch>): void;
         getLaunch(callback: BodyResponseCallback<Schema$LocationLaunch>): void;
         /**
-         * businesscommunications.brands.locations.getVerification
-         * @desc Gets the verification information for a location.
+         * Gets the verification information for a location.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2213,14 +2376,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.getVerification
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the location verification.
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         getVerification(params: Params$Resource$Brands$Locations$Getverification, options: StreamMethodOptions): GaxiosPromise<Readable>;
         getVerification(params?: Params$Resource$Brands$Locations$Getverification, options?: MethodOptions): GaxiosPromise<Schema$LocationVerification>;
@@ -2229,9 +2390,9 @@ export declare namespace businesscommunications_v1 {
         getVerification(params: Params$Resource$Brands$Locations$Getverification, callback: BodyResponseCallback<Schema$LocationVerification>): void;
         getVerification(callback: BodyResponseCallback<Schema$LocationVerification>): void;
         /**
-         * businesscommunications.brands.locations.list
-         * @desc Lists all the locations for a brand. *Note*: This method always sets `pageSize` to `0`.
+         * Lists all the locations for a brand. *Note*: This method always sets `pageSize` to `0`.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2276,16 +2437,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.list
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {integer=} params.pageSize The maximum number of results to be returned by the server. The server may further constrain the maximum number of results returned in a single page. If the page_size is 0, the server will decide the number of results to be returned.
-         * @param {string=} params.pageToken The next_page_token value returned from a previous List request, if any.
-         * @param {string} params.parent Required. The unique identifier of the brand. If the brand identifier is "1234", this parameter resolves to "brands/1234".
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         list(params: Params$Resource$Brands$Locations$List, options: StreamMethodOptions): GaxiosPromise<Readable>;
         list(params?: Params$Resource$Brands$Locations$List, options?: MethodOptions): GaxiosPromise<Schema$ListLocationsResponse>;
@@ -2294,9 +2451,9 @@ export declare namespace businesscommunications_v1 {
         list(params: Params$Resource$Brands$Locations$List, callback: BodyResponseCallback<Schema$ListLocationsResponse>): void;
         list(callback: BodyResponseCallback<Schema$ListLocationsResponse>): void;
         /**
-         * businesscommunications.brands.locations.patch
-         * @desc Updates information about a location. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
+         * Updates information about a location. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2336,7 +2493,8 @@ export declare namespace businesscommunications_v1 {
          *       //   "locationTestUrl": "my_locationTestUrl",
          *       //   "testUrls": [],
          *       //   "conversationalSettings": {},
-         *       //   "defaultLocale": "my_defaultLocale"
+         *       //   "defaultLocale": "my_defaultLocale",
+         *       //   "listingId": "my_listingId"
          *       // }
          *     },
          *   });
@@ -2351,7 +2509,8 @@ export declare namespace businesscommunications_v1 {
          *   //   "locationTestUrl": "my_locationTestUrl",
          *   //   "testUrls": [],
          *   //   "conversationalSettings": {},
-         *   //   "defaultLocale": "my_defaultLocale"
+         *   //   "defaultLocale": "my_defaultLocale",
+         *   //   "listingId": "my_listingId"
          *   // }
          * }
          *
@@ -2360,16 +2519,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.patch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name The unique identifier of the location. Read-only. Defined by the platform.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().Location} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         patch(params: Params$Resource$Brands$Locations$Patch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         patch(params?: Params$Resource$Brands$Locations$Patch, options?: MethodOptions): GaxiosPromise<Schema$Location>;
@@ -2378,9 +2533,9 @@ export declare namespace businesscommunications_v1 {
         patch(params: Params$Resource$Brands$Locations$Patch, callback: BodyResponseCallback<Schema$Location>): void;
         patch(callback: BodyResponseCallback<Schema$Location>): void;
         /**
-         * businesscommunications.brands.locations.requestLaunch
-         * @desc Begins the launch process for a location. A location is available to users after it launches. A location can only have one instance of launch at a time. If the location hasn't been launched previously, sets the launch status to `PENDING`.
+         * Begins the launch process for a location. A location is available to users after it launches. A location can only have one instance of launch at a time. If the location hasn't been launched previously, sets the launch status to `PENDING`.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2427,15 +2582,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.requestLaunch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the location. If the brand identifier is "1234" and the location identifier is "5678", this parameter resolves to "brands/1234/locations/5678".
-         * @param {().RequestLocationLaunchRequest} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         requestLaunch(params: Params$Resource$Brands$Locations$Requestlaunch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         requestLaunch(params?: Params$Resource$Brands$Locations$Requestlaunch, options?: MethodOptions): GaxiosPromise<Schema$LocationLaunch>;
@@ -2444,9 +2596,9 @@ export declare namespace businesscommunications_v1 {
         requestLaunch(params: Params$Resource$Brands$Locations$Requestlaunch, callback: BodyResponseCallback<Schema$LocationLaunch>): void;
         requestLaunch(callback: BodyResponseCallback<Schema$LocationLaunch>): void;
         /**
-         * businesscommunications.brands.locations.requestVerification
-         * @desc Begins verification for a location. A location is available for use after it's verified. A location can only have one instance of verification at a time. If the location status hasn't been verified previously, sets the status to `PENDING`.
+         * Begins verification for a location. A location is available for use after it's verified. A location can only have one instance of verification at a time. If the location status hasn't been verified previously, sets the status to `PENDING`.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2495,15 +2647,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.requestVerification
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The unique identifier of the location. If the brand identifier is "1234" and the location identifier is "5678", this parameter resolves to "brands/1234/locations/5678".
-         * @param {().RequestLocationVerificationRequest} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         requestVerification(params: Params$Resource$Brands$Locations$Requestverification, options: StreamMethodOptions): GaxiosPromise<Readable>;
         requestVerification(params?: Params$Resource$Brands$Locations$Requestverification, options?: MethodOptions): GaxiosPromise<Schema$LocationVerification>;
@@ -2512,9 +2661,9 @@ export declare namespace businesscommunications_v1 {
         requestVerification(params: Params$Resource$Brands$Locations$Requestverification, callback: BodyResponseCallback<Schema$LocationVerification>): void;
         requestVerification(callback: BodyResponseCallback<Schema$LocationVerification>): void;
         /**
-         * businesscommunications.brands.locations.updateLaunch
-         * @desc Updates the launch information for a location.
+         * Updates the launch information for a location.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2566,16 +2715,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.brands.locations.updateLaunch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Required. The identifier for launch.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().LocationLaunch} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         updateLaunch(params: Params$Resource$Brands$Locations$Updatelaunch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         updateLaunch(params?: Params$Resource$Brands$Locations$Updatelaunch, options?: MethodOptions): GaxiosPromise<Schema$LocationLaunch>;
@@ -2684,9 +2829,9 @@ export declare namespace businesscommunications_v1 {
         context: APIRequestContext;
         constructor(context: APIRequestContext);
         /**
-         * businesscommunications.partners.get
-         * @desc Get the information about the partner.
+         * Get the information about the partner.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2730,14 +2875,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.partners.get
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Optional. The unique identifier of the partner.
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         get(params: Params$Resource$Partners$Get, options: StreamMethodOptions): GaxiosPromise<Readable>;
         get(params?: Params$Resource$Partners$Get, options?: MethodOptions): GaxiosPromise<Schema$Partner>;
@@ -2746,9 +2889,9 @@ export declare namespace businesscommunications_v1 {
         get(params: Params$Resource$Partners$Get, callback: BodyResponseCallback<Schema$Partner>): void;
         get(callback: BodyResponseCallback<Schema$Partner>): void;
         /**
-         * businesscommunications.partners.patch
-         * @desc Updates the information for a partner.
+         * Updates the information for a partner.
          * @example
+         * ```js
          * // Before running the sample:
          * // - Enable the API at:
          * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
@@ -2806,16 +2949,12 @@ export declare namespace businesscommunications_v1 {
          *   throw e;
          * });
          *
-         * @alias businesscommunications.partners.patch
-         * @memberOf! ()
+         * ```
          *
-         * @param {object} params Parameters for request
-         * @param {string} params.name Output only. The unique identifier of the partner. Defined by the platform.
-         * @param {string=} params.updateMask The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         * @param {().Partner} params.requestBody Request body data
-         * @param {object} [options] Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param {callback} callback The callback that handles the response.
-         * @return {object} Request object
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
          */
         patch(params: Params$Resource$Partners$Patch, options: StreamMethodOptions): GaxiosPromise<Readable>;
         patch(params?: Params$Resource$Partners$Patch, options?: MethodOptions): GaxiosPromise<Schema$Partner>;
