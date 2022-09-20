@@ -14,7 +14,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.businesscommunications_v1 = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/class-name-casing */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-namespace */
@@ -28,14 +27,10 @@ var businesscommunications_v1;
      *
      *
      * @example
+     * ```js
      * const {google} = require('googleapis');
      * const businesscommunications = google.businesscommunications('v1');
-     *
-     * @namespace businesscommunications
-     * @type {Function}
-     * @version v1
-     * @variation v1
-     * @param {object=} options Options for Businesscommunications
+     * ```
      */
     class Businesscommunications {
         constructor(options, google) {
@@ -79,10 +74,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         delete(paramsOrCallback, optionsOrCallback, callback) {
@@ -109,10 +104,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         get(paramsOrCallback, optionsOrCallback, callback) {
@@ -139,10 +134,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         list(paramsOrCallback, optionsOrCallback, callback) {
@@ -169,10 +164,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         patch(paramsOrCallback, optionsOrCallback, callback) {
@@ -199,10 +194,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
@@ -210,7 +205,9 @@ var businesscommunications_v1;
     class Resource$Brands$Agents {
         constructor(context) {
             this.context = context;
-            this.dialogflowAssociation = new Resource$Brands$Agents$Dialogflowassociation(this.context);
+            this.dialogflowAssociation =
+                new Resource$Brands$Agents$Dialogflowassociation(this.context);
+            this.integrations = new Resource$Brands$Agents$Integrations(this.context);
         }
         associateDialogflow(paramsOrCallback, optionsOrCallback, callback) {
             let params = (paramsOrCallback ||
@@ -237,10 +234,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         create(paramsOrCallback, optionsOrCallback, callback) {
@@ -268,10 +265,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         delete(paramsOrCallback, optionsOrCallback, callback) {
@@ -299,10 +296,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         dissociateDialogflow(paramsOrCallback, optionsOrCallback, callback) {
@@ -330,10 +327,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         get(paramsOrCallback, optionsOrCallback, callback) {
@@ -361,10 +358,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         getLaunch(paramsOrCallback, optionsOrCallback, callback) {
@@ -392,10 +389,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         getVerification(paramsOrCallback, optionsOrCallback, callback) {
@@ -423,10 +420,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         list(paramsOrCallback, optionsOrCallback, callback) {
@@ -454,10 +451,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         patch(paramsOrCallback, optionsOrCallback, callback) {
@@ -485,10 +482,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         requestLaunch(paramsOrCallback, optionsOrCallback, callback) {
@@ -516,10 +513,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         requestVerification(paramsOrCallback, optionsOrCallback, callback) {
@@ -547,10 +544,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         updateDialogflowAssociation(paramsOrCallback, optionsOrCallback, callback) {
@@ -559,7 +556,8 @@ var businesscommunications_v1;
             let options = (optionsOrCallback || {});
             if (typeof paramsOrCallback === 'function') {
                 callback = paramsOrCallback;
-                params = {};
+                params =
+                    {};
                 options = {};
             }
             if (typeof optionsOrCallback === 'function') {
@@ -578,10 +576,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         updateLaunch(paramsOrCallback, optionsOrCallback, callback) {
@@ -609,10 +607,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         updateVerification(paramsOrCallback, optionsOrCallback, callback) {
@@ -640,10 +638,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
@@ -651,14 +649,16 @@ var businesscommunications_v1;
     class Resource$Brands$Agents$Dialogflowassociation {
         constructor(context) {
             this.context = context;
-            this.knowledgebases = new Resource$Brands$Agents$Dialogflowassociation$Knowledgebases(this.context);
+            this.knowledgebases =
+                new Resource$Brands$Agents$Dialogflowassociation$Knowledgebases(this.context);
         }
     }
     businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation = Resource$Brands$Agents$Dialogflowassociation;
     class Resource$Brands$Agents$Dialogflowassociation$Knowledgebases {
         constructor(context) {
             this.context = context;
-            this.documents = new Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents(this.context);
+            this.documents =
+                new Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents(this.context);
         }
         create(paramsOrCallback, optionsOrCallback, callback) {
             let params = (paramsOrCallback ||
@@ -666,7 +666,8 @@ var businesscommunications_v1;
             let options = (optionsOrCallback || {});
             if (typeof paramsOrCallback === 'function') {
                 callback = paramsOrCallback;
-                params = {};
+                params =
+                    {};
                 options = {};
             }
             if (typeof optionsOrCallback === 'function') {
@@ -685,15 +686,85 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
     businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation$Knowledgebases = Resource$Brands$Agents$Dialogflowassociation$Knowledgebases;
     class Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents {
+        constructor(context) {
+            this.context = context;
+        }
+        create(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params =
+                    {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+parent}/documents').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'POST',
+                }, options),
+                params,
+                requiredParams: ['parent'],
+                pathParams: ['parent'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        delete(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params =
+                    {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'DELETE',
+                }, options),
+                params,
+                requiredParams: ['name'],
+                pathParams: ['name'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+    }
+    businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents = Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents;
+    class Resource$Brands$Agents$Integrations {
         constructor(context) {
             this.context = context;
         }
@@ -713,7 +784,7 @@ var businesscommunications_v1;
             const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
             const parameters = {
                 options: Object.assign({
-                    url: (rootUrl + '/v1/{+parent}/documents').replace(/([^:]\/)\/+/g, '$1'),
+                    url: (rootUrl + '/v1/{+parent}/integrations').replace(/([^:]\/)\/+/g, '$1'),
                     method: 'POST',
                 }, options),
                 params,
@@ -722,10 +793,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         delete(paramsOrCallback, optionsOrCallback, callback) {
@@ -753,14 +824,107 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        get(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'GET',
+                }, options),
+                params,
+                requiredParams: ['name'],
+                pathParams: ['name'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        list(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+parent}/integrations').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'GET',
+                }, options),
+                params,
+                requiredParams: ['parent'],
+                pathParams: ['parent'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        patch(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'PATCH',
+                }, options),
+                params,
+                requiredParams: ['name'],
+                pathParams: ['name'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
-    businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents = Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents;
+    businesscommunications_v1.Resource$Brands$Agents$Integrations = Resource$Brands$Agents$Integrations;
     class Resource$Brands$Locations {
         constructor(context) {
             this.context = context;
@@ -790,10 +954,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         delete(paramsOrCallback, optionsOrCallback, callback) {
@@ -821,10 +985,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         get(paramsOrCallback, optionsOrCallback, callback) {
@@ -852,10 +1016,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         getLaunch(paramsOrCallback, optionsOrCallback, callback) {
@@ -883,10 +1047,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         getVerification(paramsOrCallback, optionsOrCallback, callback) {
@@ -914,10 +1078,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         list(paramsOrCallback, optionsOrCallback, callback) {
@@ -945,10 +1109,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         patch(paramsOrCallback, optionsOrCallback, callback) {
@@ -976,10 +1140,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         requestLaunch(paramsOrCallback, optionsOrCallback, callback) {
@@ -1007,10 +1171,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         requestVerification(paramsOrCallback, optionsOrCallback, callback) {
@@ -1038,10 +1202,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         updateLaunch(paramsOrCallback, optionsOrCallback, callback) {
@@ -1069,10 +1233,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
@@ -1105,10 +1269,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
         patch(paramsOrCallback, optionsOrCallback, callback) {
@@ -1135,10 +1299,10 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
@@ -1172,13 +1336,12 @@ var businesscommunications_v1;
                 context: this.context,
             };
             if (callback) {
-                googleapis_common_1.createAPIRequest(parameters, callback);
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
             }
             else {
-                return googleapis_common_1.createAPIRequest(parameters);
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
     }
     businesscommunications_v1.Resource$Surveyquestions = Resource$Surveyquestions;
 })(businesscommunications_v1 = exports.businesscommunications_v1 || (exports.businesscommunications_v1 = {}));
-//# sourceMappingURL=v1.js.map
