@@ -171,15 +171,6 @@ export declare namespace businesscommunications_v1 {
         approvalState?: string | null;
     }
     /**
-     * Request to associate a Dialogflow project with an agent.
-     */
-    export interface Schema$AssociateDialogflowRequest {
-        /**
-         * Dialogflow association details.
-         */
-        dialogflowAssociation?: Schema$DialogflowAssociation;
-    }
-    /**
      * Configuration details for supporting OAuth on Business Messages.
      */
     export interface Schema$AuthorizationConfig {
@@ -240,10 +231,6 @@ export declare namespace businesscommunications_v1 {
          * Required. The default locale for the agent. Must match a locale defined in `conversationalSettings`.
          */
         defaultLocale?: string | null;
-        /**
-         * Optional. Information about Business Messages/Dialogflow Association.
-         */
-        dialogflowAssociation?: Schema$DialogflowAssociation;
         /**
          * Optional. List of entry point configurations. Not modifiable after agent verification.
          */
@@ -385,35 +372,6 @@ export declare namespace businesscommunications_v1 {
         customQuestions?: Schema$SurveyQuestion[];
     }
     /**
-     * Information about an associated Dialogflow project and knowledge base.
-     */
-    export interface Schema$DialogflowAssociation {
-        /**
-         * Required. The Dialogflow project ID. Non-editable. To change this value, you must disassociate the Dialogflow project from this agent, then create a new association.
-         */
-        dfProjectId?: string | null;
-        /**
-         * Output only. The service account that must be configured in the Dialogflow project with the "Dialogflow Console Agent Editor" role. This is required to provide access to the Dialogflow API.
-         */
-        dfServiceAccountEmail?: string | null;
-        /**
-         * If `true`, Business Messages automatically sends the Dialogflow responses to users.
-         */
-        enableAutoResponse?: boolean | null;
-        /**
-         * Output only. Knowledge bases associated with the Dialogflow project.
-         */
-        knowledgeBases?: Schema$Knowledgebase[];
-        /**
-         * Output only. The identifier for the Dialogflow association.
-         */
-        name?: string | null;
-        /**
-         * Output only. The Dialogflow association operation information.
-         */
-        operationInfo?: Schema$OperationInfo;
-    }
-    /**
      * Information about a Business Messages agent and Dialogflow CX project association.
      */
     export interface Schema$DialogflowCxIntegration {
@@ -514,40 +472,6 @@ export declare namespace businesscommunications_v1 {
         updateTime?: string | null;
     }
     /**
-     * Request to dissociate a Dialogflow project from an agent.
-     */
-    export interface Schema$DissociateDialogflowRequest {
-    }
-    /**
-     * A knowledge base document. A document can be either a website URL or a URL to a CSV file. URLs must be publicly available. CSV files must contain one or more question/answer pairs, with one row for each pair.
-     */
-    export interface Schema$Document {
-        /**
-         * Required. Display name of a FAQ document.
-         */
-        displayName?: string | null;
-        /**
-         * URL of a FAQ document.
-         */
-        faqUrl?: string | null;
-        /**
-         * Output only. Document ID. Unique identifier returned by Dialogflow service, after creation of a document Format - projects/{project\}/dialogflowAssociation/knowledgebases/{knowledgebase\}/documents/{document\}
-         */
-        name?: string | null;
-        /**
-         * Output only. Operation Information is populated only when a document is added to an existing knowledge base.
-         */
-        operationInfo?: Schema$OperationInfo;
-        /**
-         * The raw content of the document.
-         */
-        rawContent?: string | null;
-        /**
-         * Output only. Time at which the document was created/updated.
-         */
-        updateTime?: string | null;
-    }
-    /**
      * A generic empty message that you can re-use to avoid defining duplicated empty messages in your APIs. A typical example is to use it as the request or the response type of an API method. For instance: service Foo { rpc Bar(google.protobuf.Empty) returns (google.protobuf.Empty); \}
      */
     export interface Schema$Empty {
@@ -606,27 +530,6 @@ export declare namespace businesscommunications_v1 {
          * Output only. Integration status.
          */
         status?: string | null;
-    }
-    /**
-     * Knowledge base information. A knowledge base can have multiple FAQ URLs.
-     */
-    export interface Schema$Knowledgebase {
-        /**
-         * Required. Knowledge base display name.
-         */
-        displayName?: string | null;
-        /**
-         * Output only. Knowledge base documents.
-         */
-        documents?: Schema$Document[];
-        /**
-         * Output only. Knowledge base ID. Unique identifier returned by Dialogflow service, after creation of a knowledge base. Format - projects//knowledgeBases/.
-         */
-        name?: string | null;
-        /**
-         * Output only. Time at which the knowledge base was created or updated.
-         */
-        updateTime?: string | null;
     }
     /**
      * A list of agents.
@@ -1538,78 +1441,8 @@ export declare namespace businesscommunications_v1 {
     }
     export class Resource$Brands$Agents {
         context: APIRequestContext;
-        dialogflowAssociation: Resource$Brands$Agents$Dialogflowassociation;
         integrations: Resource$Brands$Agents$Integrations;
         constructor(context: APIRequestContext);
-        /**
-         * Associate a Dialogflow project with an agent. The association may take 2-3 minutes. To check the association status, get the agent data and check the agent's `dialogflowAssociation.operationInfo`.
-         * @example
-         * ```js
-         * // Before running the sample:
-         * // - Enable the API at:
-         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
-         * // - Login into gcloud by running:
-         * //   `$ gcloud auth application-default login`
-         * // - Install the npm module by running:
-         * //   `$ npm install googleapis`
-         *
-         * const {google} = require('googleapis');
-         * const businesscommunications = google.businesscommunications('v1');
-         *
-         * async function main() {
-         *   const auth = new google.auth.GoogleAuth({
-         *     // Scopes can be specified either as an array or as a single, space-delimited string.
-         *     scopes: [],
-         *   });
-         *
-         *   // Acquire an auth client, and bind it to all future calls
-         *   const authClient = await auth.getClient();
-         *   google.options({auth: authClient});
-         *
-         *   // Do the magic
-         *   const res = await businesscommunications.brands.agents.associateDialogflow({
-         *     // Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5678".
-         *     agent: 'brands/my-brand/agents/my-agent',
-         *
-         *     // Request body metadata
-         *     requestBody: {
-         *       // request body parameters
-         *       // {
-         *       //   "dialogflowAssociation": {}
-         *       // }
-         *     },
-         *   });
-         *   console.log(res.data);
-         *
-         *   // Example response
-         *   // {
-         *   //   "name": "my_name",
-         *   //   "dfProjectId": "my_dfProjectId",
-         *   //   "dfServiceAccountEmail": "my_dfServiceAccountEmail",
-         *   //   "knowledgeBases": [],
-         *   //   "enableAutoResponse": false,
-         *   //   "operationInfo": {}
-         *   // }
-         * }
-         *
-         * main().catch(e => {
-         *   console.error(e);
-         *   throw e;
-         * });
-         *
-         * ```
-         *
-         * @param params - Parameters for request
-         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param callback - Optional callback that handles the response.
-         * @returns A promise if used with async/await, or void if used with a callback.
-         */
-        associateDialogflow(params: Params$Resource$Brands$Agents$Associatedialogflow, options: StreamMethodOptions): GaxiosPromise<Readable>;
-        associateDialogflow(params?: Params$Resource$Brands$Agents$Associatedialogflow, options?: MethodOptions): GaxiosPromise<Schema$DialogflowAssociation>;
-        associateDialogflow(params: Params$Resource$Brands$Agents$Associatedialogflow, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
-        associateDialogflow(params: Params$Resource$Brands$Agents$Associatedialogflow, options: MethodOptions | BodyResponseCallback<Schema$DialogflowAssociation>, callback: BodyResponseCallback<Schema$DialogflowAssociation>): void;
-        associateDialogflow(params: Params$Resource$Brands$Agents$Associatedialogflow, callback: BodyResponseCallback<Schema$DialogflowAssociation>): void;
-        associateDialogflow(callback: BodyResponseCallback<Schema$DialogflowAssociation>): void;
         /**
          * Creates a new agent to represent a brand.
          * @example
@@ -1736,66 +1569,6 @@ export declare namespace businesscommunications_v1 {
         delete(params: Params$Resource$Brands$Agents$Delete, options: MethodOptions | BodyResponseCallback<Schema$Empty>, callback: BodyResponseCallback<Schema$Empty>): void;
         delete(params: Params$Resource$Brands$Agents$Delete, callback: BodyResponseCallback<Schema$Empty>): void;
         delete(callback: BodyResponseCallback<Schema$Empty>): void;
-        /**
-         * Dissociate a Dialogflow project from an agent. The dissociation may take 2-3 minutes. To check the dissociation status, get the agent data and check the agent's `dialogflowAssociation.operationInfo`.
-         * @example
-         * ```js
-         * // Before running the sample:
-         * // - Enable the API at:
-         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
-         * // - Login into gcloud by running:
-         * //   `$ gcloud auth application-default login`
-         * // - Install the npm module by running:
-         * //   `$ npm install googleapis`
-         *
-         * const {google} = require('googleapis');
-         * const businesscommunications = google.businesscommunications('v1');
-         *
-         * async function main() {
-         *   const auth = new google.auth.GoogleAuth({
-         *     // Scopes can be specified either as an array or as a single, space-delimited string.
-         *     scopes: [],
-         *   });
-         *
-         *   // Acquire an auth client, and bind it to all future calls
-         *   const authClient = await auth.getClient();
-         *   google.options({auth: authClient});
-         *
-         *   // Do the magic
-         *   const res = await businesscommunications.brands.agents.dissociateDialogflow({
-         *     // Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this field resolves to "brands/1234/agents/5678".
-         *     agent: 'brands/my-brand/agents/my-agent',
-         *
-         *     // Request body metadata
-         *     requestBody: {
-         *       // request body parameters
-         *       // {}
-         *     },
-         *   });
-         *   console.log(res.data);
-         *
-         *   // Example response
-         *   // {}
-         * }
-         *
-         * main().catch(e => {
-         *   console.error(e);
-         *   throw e;
-         * });
-         *
-         * ```
-         *
-         * @param params - Parameters for request
-         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param callback - Optional callback that handles the response.
-         * @returns A promise if used with async/await, or void if used with a callback.
-         */
-        dissociateDialogflow(params: Params$Resource$Brands$Agents$Dissociatedialogflow, options: StreamMethodOptions): GaxiosPromise<Readable>;
-        dissociateDialogflow(params?: Params$Resource$Brands$Agents$Dissociatedialogflow, options?: MethodOptions): GaxiosPromise<Schema$Empty>;
-        dissociateDialogflow(params: Params$Resource$Brands$Agents$Dissociatedialogflow, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
-        dissociateDialogflow(params: Params$Resource$Brands$Agents$Dissociatedialogflow, options: MethodOptions | BodyResponseCallback<Schema$Empty>, callback: BodyResponseCallback<Schema$Empty>): void;
-        dissociateDialogflow(params: Params$Resource$Brands$Agents$Dissociatedialogflow, callback: BodyResponseCallback<Schema$Empty>): void;
-        dissociateDialogflow(callback: BodyResponseCallback<Schema$Empty>): void;
         /**
          * Get information about an agent.
          * @example
@@ -2240,83 +2013,6 @@ export declare namespace businesscommunications_v1 {
         requestVerification(params: Params$Resource$Brands$Agents$Requestverification, callback: BodyResponseCallback<Schema$AgentVerification>): void;
         requestVerification(callback: BodyResponseCallback<Schema$AgentVerification>): void;
         /**
-         * Update Dialogflow association settings for an agent.
-         * @example
-         * ```js
-         * // Before running the sample:
-         * // - Enable the API at:
-         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
-         * // - Login into gcloud by running:
-         * //   `$ gcloud auth application-default login`
-         * // - Install the npm module by running:
-         * //   `$ npm install googleapis`
-         *
-         * const {google} = require('googleapis');
-         * const businesscommunications = google.businesscommunications('v1');
-         *
-         * async function main() {
-         *   const auth = new google.auth.GoogleAuth({
-         *     // Scopes can be specified either as an array or as a single, space-delimited string.
-         *     scopes: [],
-         *   });
-         *
-         *   // Acquire an auth client, and bind it to all future calls
-         *   const authClient = await auth.getClient();
-         *   google.options({auth: authClient});
-         *
-         *   // Do the magic
-         *   const res =
-         *     await businesscommunications.brands.agents.updateDialogflowAssociation({
-         *       // Output only. The identifier for the Dialogflow association.
-         *       name: 'brands/my-brand/agents/my-agent/dialogflowAssociation',
-         *       // The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         *       updateMask: 'placeholder-value',
-         *
-         *       // Request body metadata
-         *       requestBody: {
-         *         // request body parameters
-         *         // {
-         *         //   "name": "my_name",
-         *         //   "dfProjectId": "my_dfProjectId",
-         *         //   "dfServiceAccountEmail": "my_dfServiceAccountEmail",
-         *         //   "knowledgeBases": [],
-         *         //   "enableAutoResponse": false,
-         *         //   "operationInfo": {}
-         *         // }
-         *       },
-         *     });
-         *   console.log(res.data);
-         *
-         *   // Example response
-         *   // {
-         *   //   "name": "my_name",
-         *   //   "dfProjectId": "my_dfProjectId",
-         *   //   "dfServiceAccountEmail": "my_dfServiceAccountEmail",
-         *   //   "knowledgeBases": [],
-         *   //   "enableAutoResponse": false,
-         *   //   "operationInfo": {}
-         *   // }
-         * }
-         *
-         * main().catch(e => {
-         *   console.error(e);
-         *   throw e;
-         * });
-         *
-         * ```
-         *
-         * @param params - Parameters for request
-         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param callback - Optional callback that handles the response.
-         * @returns A promise if used with async/await, or void if used with a callback.
-         */
-        updateDialogflowAssociation(params: Params$Resource$Brands$Agents$Updatedialogflowassociation, options: StreamMethodOptions): GaxiosPromise<Readable>;
-        updateDialogflowAssociation(params?: Params$Resource$Brands$Agents$Updatedialogflowassociation, options?: MethodOptions): GaxiosPromise<Schema$DialogflowAssociation>;
-        updateDialogflowAssociation(params: Params$Resource$Brands$Agents$Updatedialogflowassociation, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
-        updateDialogflowAssociation(params: Params$Resource$Brands$Agents$Updatedialogflowassociation, options: MethodOptions | BodyResponseCallback<Schema$DialogflowAssociation>, callback: BodyResponseCallback<Schema$DialogflowAssociation>): void;
-        updateDialogflowAssociation(params: Params$Resource$Brands$Agents$Updatedialogflowassociation, callback: BodyResponseCallback<Schema$DialogflowAssociation>): void;
-        updateDialogflowAssociation(callback: BodyResponseCallback<Schema$DialogflowAssociation>): void;
-        /**
          * Updates the launch information for an agent.
          * @example
          * ```js
@@ -2457,16 +2153,6 @@ export declare namespace businesscommunications_v1 {
         updateVerification(params: Params$Resource$Brands$Agents$Updateverification, callback: BodyResponseCallback<Schema$AgentVerification>): void;
         updateVerification(callback: BodyResponseCallback<Schema$AgentVerification>): void;
     }
-    export interface Params$Resource$Brands$Agents$Associatedialogflow extends StandardParameters {
-        /**
-         * Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5678".
-         */
-        agent?: string;
-        /**
-         * Request body metadata
-         */
-        requestBody?: Schema$AssociateDialogflowRequest;
-    }
     export interface Params$Resource$Brands$Agents$Create extends StandardParameters {
         /**
          * Required. The unique identifier of the brand the agent represents. If the brand identifier is "1234", this parameter is "brands/1234".
@@ -2482,16 +2168,6 @@ export declare namespace businesscommunications_v1 {
          * Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5668".
          */
         name?: string;
-    }
-    export interface Params$Resource$Brands$Agents$Dissociatedialogflow extends StandardParameters {
-        /**
-         * Required. The unique identifier of the agent. If the brand identifier is "1234" and the agent identifier is "5678", this field resolves to "brands/1234/agents/5678".
-         */
-        agent?: string;
-        /**
-         * Request body metadata
-         */
-        requestBody?: Schema$DissociateDialogflowRequest;
     }
     export interface Params$Resource$Brands$Agents$Get extends StandardParameters {
         /**
@@ -2559,20 +2235,6 @@ export declare namespace businesscommunications_v1 {
          */
         requestBody?: Schema$RequestAgentVerificationRequest;
     }
-    export interface Params$Resource$Brands$Agents$Updatedialogflowassociation extends StandardParameters {
-        /**
-         * Output only. The identifier for the Dialogflow association.
-         */
-        name?: string;
-        /**
-         * The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-         */
-        updateMask?: string;
-        /**
-         * Request body metadata
-         */
-        requestBody?: Schema$DialogflowAssociation;
-    }
     export interface Params$Resource$Brands$Agents$Updatelaunch extends StandardParameters {
         /**
          * Required. The identifier for launch.
@@ -2600,254 +2262,6 @@ export declare namespace businesscommunications_v1 {
          * Request body metadata
          */
         requestBody?: Schema$AgentVerification;
-    }
-    export class Resource$Brands$Agents$Dialogflowassociation {
-        context: APIRequestContext;
-        knowledgebases: Resource$Brands$Agents$Dialogflowassociation$Knowledgebases;
-        constructor(context: APIRequestContext);
-    }
-    export class Resource$Brands$Agents$Dialogflowassociation$Knowledgebases {
-        context: APIRequestContext;
-        documents: Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents;
-        constructor(context: APIRequestContext);
-        /**
-         * Creates a knowledge base in a Dialogflow project.
-         * @example
-         * ```js
-         * // Before running the sample:
-         * // - Enable the API at:
-         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
-         * // - Login into gcloud by running:
-         * //   `$ gcloud auth application-default login`
-         * // - Install the npm module by running:
-         * //   `$ npm install googleapis`
-         *
-         * const {google} = require('googleapis');
-         * const businesscommunications = google.businesscommunications('v1');
-         *
-         * async function main() {
-         *   const auth = new google.auth.GoogleAuth({
-         *     // Scopes can be specified either as an array or as a single, space-delimited string.
-         *     scopes: [],
-         *   });
-         *
-         *   // Acquire an auth client, and bind it to all future calls
-         *   const authClient = await auth.getClient();
-         *   google.options({auth: authClient});
-         *
-         *   // Do the magic
-         *   const res =
-         *     await businesscommunications.brands.agents.dialogflowAssociation.knowledgebases.create(
-         *       {
-         *         // Required. The unique identifier of the association between the agent and the Dialogflow project that the knowledge base belongs to. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5678/dialogflowAssociation".
-         *         parent: 'brands/my-brand/agents/my-agent/dialogflowAssociation',
-         *
-         *         // Request body metadata
-         *         requestBody: {
-         *           // request body parameters
-         *           // {
-         *           //   "name": "my_name",
-         *           //   "displayName": "my_displayName",
-         *           //   "documents": [],
-         *           //   "updateTime": "my_updateTime"
-         *           // }
-         *         },
-         *       }
-         *     );
-         *   console.log(res.data);
-         *
-         *   // Example response
-         *   // {
-         *   //   "name": "my_name",
-         *   //   "displayName": "my_displayName",
-         *   //   "documents": [],
-         *   //   "updateTime": "my_updateTime"
-         *   // }
-         * }
-         *
-         * main().catch(e => {
-         *   console.error(e);
-         *   throw e;
-         * });
-         *
-         * ```
-         *
-         * @param params - Parameters for request
-         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param callback - Optional callback that handles the response.
-         * @returns A promise if used with async/await, or void if used with a callback.
-         */
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Create, options: StreamMethodOptions): GaxiosPromise<Readable>;
-        create(params?: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Create, options?: MethodOptions): GaxiosPromise<Schema$Knowledgebase>;
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Create, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Create, options: MethodOptions | BodyResponseCallback<Schema$Knowledgebase>, callback: BodyResponseCallback<Schema$Knowledgebase>): void;
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Create, callback: BodyResponseCallback<Schema$Knowledgebase>): void;
-        create(callback: BodyResponseCallback<Schema$Knowledgebase>): void;
-    }
-    export interface Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Create extends StandardParameters {
-        /**
-         * Required. The unique identifier of the association between the agent and the Dialogflow project that the knowledge base belongs to. If the brand identifier is "1234" and the agent identifier is "5678", this parameter resolves to "brands/1234/agents/5678/dialogflowAssociation".
-         */
-        parent?: string;
-        /**
-         * Request body metadata
-         */
-        requestBody?: Schema$Knowledgebase;
-    }
-    export class Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents {
-        context: APIRequestContext;
-        constructor(context: APIRequestContext);
-        /**
-         * Creates a document in a Dialogflow project knowledge base. Creating a document may take 2-3 minutes. To check the document status, get the agent data and check the document's `operationInfo`.
-         * @example
-         * ```js
-         * // Before running the sample:
-         * // - Enable the API at:
-         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
-         * // - Login into gcloud by running:
-         * //   `$ gcloud auth application-default login`
-         * // - Install the npm module by running:
-         * //   `$ npm install googleapis`
-         *
-         * const {google} = require('googleapis');
-         * const businesscommunications = google.businesscommunications('v1');
-         *
-         * async function main() {
-         *   const auth = new google.auth.GoogleAuth({
-         *     // Scopes can be specified either as an array or as a single, space-delimited string.
-         *     scopes: [],
-         *   });
-         *
-         *   // Acquire an auth client, and bind it to all future calls
-         *   const authClient = await auth.getClient();
-         *   google.options({auth: authClient});
-         *
-         *   // Do the magic
-         *   const res =
-         *     await businesscommunications.brands.agents.dialogflowAssociation.knowledgebases.documents.create(
-         *       {
-         *         // Required. The unique identifier of the knowledge base that document represents. If the brand identifier is "1234", the agent identifier is "5678" and knowledge base identifier is "002", this field resolves to "brands/1234/agents/5678/dialogflowAssociation/knowledgebases/002".
-         *         parent:
-         *           'brands/my-brand/agents/my-agent/dialogflowAssociation/knowledgebases/my-knowledgebase',
-         *
-         *         // Request body metadata
-         *         requestBody: {
-         *           // request body parameters
-         *           // {
-         *           //   "name": "my_name",
-         *           //   "displayName": "my_displayName",
-         *           //   "faqUrl": "my_faqUrl",
-         *           //   "rawContent": "my_rawContent",
-         *           //   "updateTime": "my_updateTime",
-         *           //   "operationInfo": {}
-         *           // }
-         *         },
-         *       }
-         *     );
-         *   console.log(res.data);
-         *
-         *   // Example response
-         *   // {
-         *   //   "name": "my_name",
-         *   //   "displayName": "my_displayName",
-         *   //   "faqUrl": "my_faqUrl",
-         *   //   "rawContent": "my_rawContent",
-         *   //   "updateTime": "my_updateTime",
-         *   //   "operationInfo": {}
-         *   // }
-         * }
-         *
-         * main().catch(e => {
-         *   console.error(e);
-         *   throw e;
-         * });
-         *
-         * ```
-         *
-         * @param params - Parameters for request
-         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param callback - Optional callback that handles the response.
-         * @returns A promise if used with async/await, or void if used with a callback.
-         */
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Create, options: StreamMethodOptions): GaxiosPromise<Readable>;
-        create(params?: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Create, options?: MethodOptions): GaxiosPromise<Schema$Document>;
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Create, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Create, options: MethodOptions | BodyResponseCallback<Schema$Document>, callback: BodyResponseCallback<Schema$Document>): void;
-        create(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Create, callback: BodyResponseCallback<Schema$Document>): void;
-        create(callback: BodyResponseCallback<Schema$Document>): void;
-        /**
-         * Deletes a document in a Dialogflow project knowledge base. Deleting a document may take 2-3 minutes. To check the document status, get the agent data and check the document's `operationInfo`.
-         * @example
-         * ```js
-         * // Before running the sample:
-         * // - Enable the API at:
-         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
-         * // - Login into gcloud by running:
-         * //   `$ gcloud auth application-default login`
-         * // - Install the npm module by running:
-         * //   `$ npm install googleapis`
-         *
-         * const {google} = require('googleapis');
-         * const businesscommunications = google.businesscommunications('v1');
-         *
-         * async function main() {
-         *   const auth = new google.auth.GoogleAuth({
-         *     // Scopes can be specified either as an array or as a single, space-delimited string.
-         *     scopes: [],
-         *   });
-         *
-         *   // Acquire an auth client, and bind it to all future calls
-         *   const authClient = await auth.getClient();
-         *   google.options({auth: authClient});
-         *
-         *   // Do the magic
-         *   const res =
-         *     await businesscommunications.brands.agents.dialogflowAssociation.knowledgebases.documents.delete(
-         *       {
-         *         // Required. The unique identifier of the document. If the brand identifier is "1234", the agent identifier is "5678", knowledgebase identifier is "002" and document identifier is "005", this field resolves to "brands/1234/agents/5678/dialogflowAssociation/knowledgebases/002/documents/005".
-         *         name: 'brands/my-brand/agents/my-agent/dialogflowAssociation/knowledgebases/my-knowledgebase/documents/my-document',
-         *       }
-         *     );
-         *   console.log(res.data);
-         *
-         *   // Example response
-         *   // {}
-         * }
-         *
-         * main().catch(e => {
-         *   console.error(e);
-         *   throw e;
-         * });
-         *
-         * ```
-         *
-         * @param params - Parameters for request
-         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
-         * @param callback - Optional callback that handles the response.
-         * @returns A promise if used with async/await, or void if used with a callback.
-         */
-        delete(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Delete, options: StreamMethodOptions): GaxiosPromise<Readable>;
-        delete(params?: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Delete, options?: MethodOptions): GaxiosPromise<Schema$Empty>;
-        delete(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Delete, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
-        delete(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Delete, options: MethodOptions | BodyResponseCallback<Schema$Empty>, callback: BodyResponseCallback<Schema$Empty>): void;
-        delete(params: Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Delete, callback: BodyResponseCallback<Schema$Empty>): void;
-        delete(callback: BodyResponseCallback<Schema$Empty>): void;
-    }
-    export interface Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Create extends StandardParameters {
-        /**
-         * Required. The unique identifier of the knowledge base that document represents. If the brand identifier is "1234", the agent identifier is "5678" and knowledge base identifier is "002", this field resolves to "brands/1234/agents/5678/dialogflowAssociation/knowledgebases/002".
-         */
-        parent?: string;
-        /**
-         * Request body metadata
-         */
-        requestBody?: Schema$Document;
-    }
-    export interface Params$Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents$Delete extends StandardParameters {
-        /**
-         * Required. The unique identifier of the document. If the brand identifier is "1234", the agent identifier is "5678", knowledgebase identifier is "002" and document identifier is "005", this field resolves to "brands/1234/agents/5678/dialogflowAssociation/knowledgebases/002/documents/005".
-         */
-        name?: string;
     }
     export class Resource$Brands$Agents$Integrations {
         context: APIRequestContext;

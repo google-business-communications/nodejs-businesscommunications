@@ -205,40 +205,7 @@ var businesscommunications_v1;
     class Resource$Brands$Agents {
         constructor(context) {
             this.context = context;
-            this.dialogflowAssociation =
-                new Resource$Brands$Agents$Dialogflowassociation(this.context);
             this.integrations = new Resource$Brands$Agents$Integrations(this.context);
-        }
-        associateDialogflow(paramsOrCallback, optionsOrCallback, callback) {
-            let params = (paramsOrCallback ||
-                {});
-            let options = (optionsOrCallback || {});
-            if (typeof paramsOrCallback === 'function') {
-                callback = paramsOrCallback;
-                params = {};
-                options = {};
-            }
-            if (typeof optionsOrCallback === 'function') {
-                callback = optionsOrCallback;
-                options = {};
-            }
-            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
-            const parameters = {
-                options: Object.assign({
-                    url: (rootUrl + '/v1/{+agent}:associateDialogflow').replace(/([^:]\/)\/+/g, '$1'),
-                    method: 'POST',
-                }, options),
-                params,
-                requiredParams: ['agent'],
-                pathParams: ['agent'],
-                context: this.context,
-            };
-            if (callback) {
-                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
-            }
-            else {
-                return (0, googleapis_common_1.createAPIRequest)(parameters);
-            }
         }
         create(paramsOrCallback, optionsOrCallback, callback) {
             let params = (paramsOrCallback ||
@@ -293,37 +260,6 @@ var businesscommunications_v1;
                 params,
                 requiredParams: ['name'],
                 pathParams: ['name'],
-                context: this.context,
-            };
-            if (callback) {
-                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
-            }
-            else {
-                return (0, googleapis_common_1.createAPIRequest)(parameters);
-            }
-        }
-        dissociateDialogflow(paramsOrCallback, optionsOrCallback, callback) {
-            let params = (paramsOrCallback ||
-                {});
-            let options = (optionsOrCallback || {});
-            if (typeof paramsOrCallback === 'function') {
-                callback = paramsOrCallback;
-                params = {};
-                options = {};
-            }
-            if (typeof optionsOrCallback === 'function') {
-                callback = optionsOrCallback;
-                options = {};
-            }
-            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
-            const parameters = {
-                options: Object.assign({
-                    url: (rootUrl + '/v1/{+agent}:dissociateDialogflow').replace(/([^:]\/)\/+/g, '$1'),
-                    method: 'POST',
-                }, options),
-                params,
-                requiredParams: ['agent'],
-                pathParams: ['agent'],
                 context: this.context,
             };
             if (callback) {
@@ -550,38 +486,6 @@ var businesscommunications_v1;
                 return (0, googleapis_common_1.createAPIRequest)(parameters);
             }
         }
-        updateDialogflowAssociation(paramsOrCallback, optionsOrCallback, callback) {
-            let params = (paramsOrCallback ||
-                {});
-            let options = (optionsOrCallback || {});
-            if (typeof paramsOrCallback === 'function') {
-                callback = paramsOrCallback;
-                params =
-                    {};
-                options = {};
-            }
-            if (typeof optionsOrCallback === 'function') {
-                callback = optionsOrCallback;
-                options = {};
-            }
-            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
-            const parameters = {
-                options: Object.assign({
-                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
-                    method: 'PATCH',
-                }, options),
-                params,
-                requiredParams: ['name'],
-                pathParams: ['name'],
-                context: this.context,
-            };
-            if (callback) {
-                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
-            }
-            else {
-                return (0, googleapis_common_1.createAPIRequest)(parameters);
-            }
-        }
         updateLaunch(paramsOrCallback, optionsOrCallback, callback) {
             let params = (paramsOrCallback ||
                 {});
@@ -646,124 +550,6 @@ var businesscommunications_v1;
         }
     }
     businesscommunications_v1.Resource$Brands$Agents = Resource$Brands$Agents;
-    class Resource$Brands$Agents$Dialogflowassociation {
-        constructor(context) {
-            this.context = context;
-            this.knowledgebases =
-                new Resource$Brands$Agents$Dialogflowassociation$Knowledgebases(this.context);
-        }
-    }
-    businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation = Resource$Brands$Agents$Dialogflowassociation;
-    class Resource$Brands$Agents$Dialogflowassociation$Knowledgebases {
-        constructor(context) {
-            this.context = context;
-            this.documents =
-                new Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents(this.context);
-        }
-        create(paramsOrCallback, optionsOrCallback, callback) {
-            let params = (paramsOrCallback ||
-                {});
-            let options = (optionsOrCallback || {});
-            if (typeof paramsOrCallback === 'function') {
-                callback = paramsOrCallback;
-                params =
-                    {};
-                options = {};
-            }
-            if (typeof optionsOrCallback === 'function') {
-                callback = optionsOrCallback;
-                options = {};
-            }
-            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
-            const parameters = {
-                options: Object.assign({
-                    url: (rootUrl + '/v1/{+parent}/knowledgebases').replace(/([^:]\/)\/+/g, '$1'),
-                    method: 'POST',
-                }, options),
-                params,
-                requiredParams: ['parent'],
-                pathParams: ['parent'],
-                context: this.context,
-            };
-            if (callback) {
-                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
-            }
-            else {
-                return (0, googleapis_common_1.createAPIRequest)(parameters);
-            }
-        }
-    }
-    businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation$Knowledgebases = Resource$Brands$Agents$Dialogflowassociation$Knowledgebases;
-    class Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents {
-        constructor(context) {
-            this.context = context;
-        }
-        create(paramsOrCallback, optionsOrCallback, callback) {
-            let params = (paramsOrCallback ||
-                {});
-            let options = (optionsOrCallback || {});
-            if (typeof paramsOrCallback === 'function') {
-                callback = paramsOrCallback;
-                params =
-                    {};
-                options = {};
-            }
-            if (typeof optionsOrCallback === 'function') {
-                callback = optionsOrCallback;
-                options = {};
-            }
-            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
-            const parameters = {
-                options: Object.assign({
-                    url: (rootUrl + '/v1/{+parent}/documents').replace(/([^:]\/)\/+/g, '$1'),
-                    method: 'POST',
-                }, options),
-                params,
-                requiredParams: ['parent'],
-                pathParams: ['parent'],
-                context: this.context,
-            };
-            if (callback) {
-                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
-            }
-            else {
-                return (0, googleapis_common_1.createAPIRequest)(parameters);
-            }
-        }
-        delete(paramsOrCallback, optionsOrCallback, callback) {
-            let params = (paramsOrCallback ||
-                {});
-            let options = (optionsOrCallback || {});
-            if (typeof paramsOrCallback === 'function') {
-                callback = paramsOrCallback;
-                params =
-                    {};
-                options = {};
-            }
-            if (typeof optionsOrCallback === 'function') {
-                callback = optionsOrCallback;
-                options = {};
-            }
-            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
-            const parameters = {
-                options: Object.assign({
-                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
-                    method: 'DELETE',
-                }, options),
-                params,
-                requiredParams: ['name'],
-                pathParams: ['name'],
-                context: this.context,
-            };
-            if (callback) {
-                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
-            }
-            else {
-                return (0, googleapis_common_1.createAPIRequest)(parameters);
-            }
-        }
-    }
-    businesscommunications_v1.Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents = Resource$Brands$Agents$Dialogflowassociation$Knowledgebases$Documents;
     class Resource$Brands$Agents$Integrations {
         constructor(context) {
             this.context = context;
