@@ -205,6 +205,7 @@ var businesscommunications_v1;
     class Resource$Brands$Agents {
         constructor(context) {
             this.context = context;
+            this.greetings = new Resource$Brands$Agents$Greetings(this.context);
             this.integrations = new Resource$Brands$Agents$Integrations(this.context);
         }
         create(paramsOrCallback, optionsOrCallback, callback) {
@@ -550,6 +551,136 @@ var businesscommunications_v1;
         }
     }
     businesscommunications_v1.Resource$Brands$Agents = Resource$Brands$Agents;
+    class Resource$Brands$Agents$Greetings {
+        constructor(context) {
+            this.context = context;
+        }
+        create(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+parent}/greetings').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'POST',
+                }, options),
+                params,
+                requiredParams: ['parent'],
+                pathParams: ['parent'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        get(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'GET',
+                }, options),
+                params,
+                requiredParams: ['name'],
+                pathParams: ['name'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        list(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+parent}/greetings').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'GET',
+                }, options),
+                params,
+                requiredParams: ['parent'],
+                pathParams: ['parent'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+        patch(paramsOrCallback, optionsOrCallback, callback) {
+            let params = (paramsOrCallback ||
+                {});
+            let options = (optionsOrCallback || {});
+            if (typeof paramsOrCallback === 'function') {
+                callback = paramsOrCallback;
+                params = {};
+                options = {};
+            }
+            if (typeof optionsOrCallback === 'function') {
+                callback = optionsOrCallback;
+                options = {};
+            }
+            const rootUrl = options.rootUrl || 'https://businesscommunications.googleapis.com/';
+            const parameters = {
+                options: Object.assign({
+                    url: (rootUrl + '/v1/{+name}').replace(/([^:]\/)\/+/g, '$1'),
+                    method: 'PATCH',
+                }, options),
+                params,
+                requiredParams: ['name'],
+                pathParams: ['name'],
+                context: this.context,
+            };
+            if (callback) {
+                (0, googleapis_common_1.createAPIRequest)(parameters, callback);
+            }
+            else {
+                return (0, googleapis_common_1.createAPIRequest)(parameters);
+            }
+        }
+    }
+    businesscommunications_v1.Resource$Brands$Agents$Greetings = Resource$Brands$Agents$Greetings;
     class Resource$Brands$Agents$Integrations {
         constructor(context) {
             this.context = context;

@@ -477,6 +477,242 @@ export declare namespace businesscommunications_v1 {
     export interface Schema$Empty {
     }
     /**
+     * Request to authenticate a conversation.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1AuthenticationRequest {
+        /**
+         * Details for authentication via OAuth.
+         */
+        oauth?: Schema$GoogleCommunicationsBusinessmessagesV1AuthenticationRequestOauth;
+    }
+    /**
+     * Details for authentication via OAuth.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1AuthenticationRequestOauth {
+        /**
+         * Required. The [ID](https://www.oauth.com/oauth2-servers/client-registration/client-id-secret/) of the application that asks for authorization.
+         */
+        clientId?: string | null;
+        /**
+         * Required. The [code challenge](https://tools.ietf.org/html/rfc7636#section-4.2) used to exchange access tokens.
+         */
+        codeChallenge?: string | null;
+        /**
+         * Optional. The [code challenge method](https://www.oauth.com/oauth2-servers/pkce/authorization-request/) used to generate the code challenge. If this parameter is omitted, the server assumes `plain`.
+         */
+        codeChallengeMethod?: string | null;
+        /**
+         * Required. An array that specifies the [scopes](https://oauth.net/2/scope/) of the request.
+         */
+        scopes?: string[] | null;
+    }
+    /**
+     * Card content.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1CardContent {
+        /**
+         * Optional. Description of the card. Maximum 2,000 characters.
+         */
+        description?: string | null;
+        /**
+         * Optional. Media to include in the card.
+         */
+        media?: Schema$GoogleCommunicationsBusinessmessagesV1Media;
+        /**
+         * Optional. List of suggestions to include in the card. Maximum 4 suggestions.
+         */
+        suggestions?: Schema$GoogleCommunicationsBusinessmessagesV1Suggestion[];
+        /**
+         * Optional. Title of the card. Maximum 200 characters.
+         */
+        title?: string | null;
+    }
+    /**
+     * Carousel of cards.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1CarouselCard {
+        /**
+         * The list of contents for each card in the carousel. A carousel can have a minimum of 2 cards and a maximum 10 cards.
+         */
+        cardContents?: Schema$GoogleCommunicationsBusinessmessagesV1CardContent[];
+        /**
+         * The width of the cards in the carousel.
+         */
+        cardWidth?: string | null;
+    }
+    /**
+     * Message containing the content information.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1ContentInfo {
+        /**
+         * Text describing the details about the media for accessibility purposes.
+         */
+        altText?: string | null;
+        /**
+         * Publicly reachable URL of the file. The platform determines the MIME type of the file from the content-type field in the HTTP headers when the platform fetches the file. The content-type field must be present and accurate in the HTTP response from the URL. Maximum 5 MB. Supported content types: image/jpeg, image/jpg, image/png, image/webp
+         */
+        fileUrl?: string | null;
+        /**
+         * If set, the platform fetches the file and thumbnail from the specified URLs, even if the platform has cached copies of the file (and/or of the thumbnail).
+         */
+        forceRefresh?: boolean | null;
+        /**
+         * Optional. Publicly reachable URL of the thumbnail. If you don't provide a thumbnail URL, the platform displays a blank placeholder thumbnail until the user's device downloads the file. Maximum 25 KB. Supported content types: image/jpeg, image/jpg, image/png, image/webp
+         */
+        thumbnailUrl?: string | null;
+    }
+    /**
+     * Opens the user's default dialer app with the specified phone number filled in.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1DialAction {
+        /**
+         * Required. The specified phone number, in [RFC 3966](https://tools.ietf.org/html/rfc3966) format. For example, "+1-201-555-0123".
+         */
+        phoneNumber?: string | null;
+    }
+    /**
+     * An image.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1Image {
+        /**
+         * Information about an image, including the URL of the image and the URL of the image's thumbnail.
+         */
+        contentInfo?: Schema$GoogleCommunicationsBusinessmessagesV1ContentInfo;
+    }
+    /**
+     * When tapped, sends a request for a live agent to join the conversation.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1LiveAgentRequest {
+    }
+    /**
+     * A media file within a rich card.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1Media {
+        /**
+         * Information about a file, including the URL of the file and the URL of the file's thumbnail.
+         */
+        contentInfo?: Schema$GoogleCommunicationsBusinessmessagesV1ContentInfo;
+        /**
+         * The height of the media within a rich card.
+         */
+        height?: string | null;
+    }
+    /**
+     * Opens the specified URL.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1OpenUrlAction {
+        /**
+         * URL
+         */
+        url?: string | null;
+    }
+    /**
+     * A standalone rich card or a carousel of rich cards sent from the agent to the user.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1RichCard {
+        /**
+         * Carousel of cards.
+         */
+        carouselCard?: Schema$GoogleCommunicationsBusinessmessagesV1CarouselCard;
+        /**
+         * Standalone card.
+         */
+        standaloneCard?: Schema$GoogleCommunicationsBusinessmessagesV1StandaloneCard;
+    }
+    /**
+     * Standalone card.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1StandaloneCard {
+        /**
+         * Card content.
+         */
+        cardContent?: Schema$GoogleCommunicationsBusinessmessagesV1CardContent;
+    }
+    /**
+     * When tapped, initiates the corresponding native action on the device.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1SuggestedAction {
+        /**
+         * Opens the user's default dialer app.
+         */
+        dialAction?: Schema$GoogleCommunicationsBusinessmessagesV1DialAction;
+        /**
+         * Opens the specified URL.
+         */
+        openUrlAction?: Schema$GoogleCommunicationsBusinessmessagesV1OpenUrlAction;
+        /**
+         * The string that the agent receives when a user taps the suggested action. Maximum 2,048 characters.
+         */
+        postbackData?: string | null;
+        /**
+         * Text that is shown in the suggested action. Maximum 25 characters.
+         */
+        text?: string | null;
+    }
+    /**
+     * When tapped, sends the text reply back to the agent.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1SuggestedReply {
+        /**
+         * The string that the agent receives when a user taps the suggested reply. Maximum 2,048 characters.
+         */
+        postbackData?: string | null;
+        /**
+         * Text that is shown in the suggested reply and sent to the agent when the user taps it. Maximum 25 characters.
+         */
+        text?: string | null;
+    }
+    /**
+     * A suggestion within a chip list.
+     */
+    export interface Schema$GoogleCommunicationsBusinessmessagesV1Suggestion {
+        /**
+         * A suggested action that initiates a native action on the device.
+         */
+        action?: Schema$GoogleCommunicationsBusinessmessagesV1SuggestedAction;
+        /**
+         * A request to start authentication flow.
+         */
+        authenticationRequest?: Schema$GoogleCommunicationsBusinessmessagesV1AuthenticationRequest;
+        /**
+         * A request to have a live agent join the conversation.
+         */
+        liveAgentRequest?: Schema$GoogleCommunicationsBusinessmessagesV1LiveAgentRequest;
+        /**
+         * A suggestion for the user to reply with specified text.
+         */
+        reply?: Schema$GoogleCommunicationsBusinessmessagesV1SuggestedReply;
+    }
+    /**
+     * Details about a greeting.
+     */
+    export interface Schema$Greeting {
+        /**
+         * Output only. The ad link corresponding to this greeting (go/bm-link-spec).
+         */
+        adLink?: string | null;
+        /**
+         * Optional. Details about the conversation starters. Maximum 5.
+         */
+        conversationStarters?: Schema$ConversationStarters[];
+        /**
+         * Optional. A custom identifier defined by the partner.
+         */
+        customId?: string | null;
+        /**
+         * Required. The locale is a well-formed IETF BCP 47 language tag. It must match a locale defined in {@link ConversationalSettings\}.
+         */
+        locale?: string | null;
+        /**
+         * Output only. The name of the greeting, as set by Business Messages. Resolves to "brands/{brand_id\}/agents/{agent_id\}/greetings/{greeting_id\}" where {greeting_id\} is the unique ID of the greeting.
+         */
+        name?: string | null;
+        /**
+         * Required. Welcome message content. A greeting must have at least one welcome message defined.
+         */
+        welcomeMessages?: Schema$WelcomeMessage[];
+    }
+    /**
      * A range of hours that messaging is available.
      */
     export interface Schema$Hours {
@@ -554,6 +790,19 @@ export declare namespace businesscommunications_v1 {
         brands?: Schema$Brand[];
         /**
          * The pagination token to retrieve the next page of results. If the value is "", it means no further results for the request.
+         */
+        nextPageToken?: string | null;
+    }
+    /**
+     * The list of greetings associated with the agent.
+     */
+    export interface Schema$ListGreetingsResponse {
+        /**
+         * The list of greetings.
+         */
+        greetings?: Schema$Greeting[];
+        /**
+         * The pagination token to retrieve the next page of results. If the value is "", there are no more results for the request.
          */
         nextPageToken?: string | null;
     }
@@ -1080,6 +1329,18 @@ export declare namespace businesscommunications_v1 {
      */
     export interface Schema$WelcomeMessage {
         /**
+         * Image message.
+         */
+        image?: Schema$GoogleCommunicationsBusinessmessagesV1Image;
+        /**
+         * Rich card message. Could be either standalone card or carousel.
+         */
+        richCard?: Schema$GoogleCommunicationsBusinessmessagesV1RichCard;
+        /**
+         * Rich text message in valid markdown formatting.
+         */
+        richText?: string | null;
+        /**
          * Text message. Maximum length 1000 characters.
          */
         text?: string | null;
@@ -1441,6 +1702,7 @@ export declare namespace businesscommunications_v1 {
     }
     export class Resource$Brands$Agents {
         context: APIRequestContext;
+        greetings: Resource$Brands$Agents$Greetings;
         integrations: Resource$Brands$Agents$Integrations;
         constructor(context: APIRequestContext);
         /**
@@ -2262,6 +2524,326 @@ export declare namespace businesscommunications_v1 {
          * Request body metadata
          */
         requestBody?: Schema$AgentVerification;
+    }
+    export class Resource$Brands$Agents$Greetings {
+        context: APIRequestContext;
+        constructor(context: APIRequestContext);
+        /**
+         * Creates a new greeting for an agent.
+         * @example
+         * ```js
+         * // Before running the sample:
+         * // - Enable the API at:
+         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
+         * // - Login into gcloud by running:
+         * //   `$ gcloud auth application-default login`
+         * // - Install the npm module by running:
+         * //   `$ npm install googleapis`
+         *
+         * const {google} = require('googleapis');
+         * const businesscommunications = google.businesscommunications('v1');
+         *
+         * async function main() {
+         *   const auth = new google.auth.GoogleAuth({
+         *     // Scopes can be specified either as an array or as a single, space-delimited string.
+         *     scopes: [],
+         *   });
+         *
+         *   // Acquire an auth client, and bind it to all future calls
+         *   const authClient = await auth.getClient();
+         *   google.options({auth: authClient});
+         *
+         *   // Do the magic
+         *   const res = await businesscommunications.brands.agents.greetings.create({
+         *     // Required. The unique identifier of the agent associated with the greeting. If the brand ID is "1234" and the agent ID is "5678", this parameter resolves to "brands/1234/agents/5678".
+         *     parent: 'brands/my-brand/agents/my-agent',
+         *
+         *     // Request body metadata
+         *     requestBody: {
+         *       // request body parameters
+         *       // {
+         *       //   "name": "my_name",
+         *       //   "locale": "my_locale",
+         *       //   "welcomeMessages": [],
+         *       //   "conversationStarters": [],
+         *       //   "customId": "my_customId",
+         *       //   "adLink": "my_adLink"
+         *       // }
+         *     },
+         *   });
+         *   console.log(res.data);
+         *
+         *   // Example response
+         *   // {
+         *   //   "name": "my_name",
+         *   //   "locale": "my_locale",
+         *   //   "welcomeMessages": [],
+         *   //   "conversationStarters": [],
+         *   //   "customId": "my_customId",
+         *   //   "adLink": "my_adLink"
+         *   // }
+         * }
+         *
+         * main().catch(e => {
+         *   console.error(e);
+         *   throw e;
+         * });
+         *
+         * ```
+         *
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
+         */
+        create(params: Params$Resource$Brands$Agents$Greetings$Create, options: StreamMethodOptions): GaxiosPromise<Readable>;
+        create(params?: Params$Resource$Brands$Agents$Greetings$Create, options?: MethodOptions): GaxiosPromise<Schema$Greeting>;
+        create(params: Params$Resource$Brands$Agents$Greetings$Create, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
+        create(params: Params$Resource$Brands$Agents$Greetings$Create, options: MethodOptions | BodyResponseCallback<Schema$Greeting>, callback: BodyResponseCallback<Schema$Greeting>): void;
+        create(params: Params$Resource$Brands$Agents$Greetings$Create, callback: BodyResponseCallback<Schema$Greeting>): void;
+        create(callback: BodyResponseCallback<Schema$Greeting>): void;
+        /**
+         * Gets the greeting information for an agent.
+         * @example
+         * ```js
+         * // Before running the sample:
+         * // - Enable the API at:
+         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
+         * // - Login into gcloud by running:
+         * //   `$ gcloud auth application-default login`
+         * // - Install the npm module by running:
+         * //   `$ npm install googleapis`
+         *
+         * const {google} = require('googleapis');
+         * const businesscommunications = google.businesscommunications('v1');
+         *
+         * async function main() {
+         *   const auth = new google.auth.GoogleAuth({
+         *     // Scopes can be specified either as an array or as a single, space-delimited string.
+         *     scopes: [],
+         *   });
+         *
+         *   // Acquire an auth client, and bind it to all future calls
+         *   const authClient = await auth.getClient();
+         *   google.options({auth: authClient});
+         *
+         *   // Do the magic
+         *   const res = await businesscommunications.brands.agents.greetings.get({
+         *     // Required. The unique identifier of the greeting. If the brand ID is "1234", agent ID is "5678", and greeting ID is "abcd", this parameter resolves to "brands/1234/agents/5678/greetings/abcd".
+         *     name: 'brands/my-brand/agents/my-agent/greetings/my-greeting',
+         *   });
+         *   console.log(res.data);
+         *
+         *   // Example response
+         *   // {
+         *   //   "name": "my_name",
+         *   //   "locale": "my_locale",
+         *   //   "welcomeMessages": [],
+         *   //   "conversationStarters": [],
+         *   //   "customId": "my_customId",
+         *   //   "adLink": "my_adLink"
+         *   // }
+         * }
+         *
+         * main().catch(e => {
+         *   console.error(e);
+         *   throw e;
+         * });
+         *
+         * ```
+         *
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
+         */
+        get(params: Params$Resource$Brands$Agents$Greetings$Get, options: StreamMethodOptions): GaxiosPromise<Readable>;
+        get(params?: Params$Resource$Brands$Agents$Greetings$Get, options?: MethodOptions): GaxiosPromise<Schema$Greeting>;
+        get(params: Params$Resource$Brands$Agents$Greetings$Get, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
+        get(params: Params$Resource$Brands$Agents$Greetings$Get, options: MethodOptions | BodyResponseCallback<Schema$Greeting>, callback: BodyResponseCallback<Schema$Greeting>): void;
+        get(params: Params$Resource$Brands$Agents$Greetings$Get, callback: BodyResponseCallback<Schema$Greeting>): void;
+        get(callback: BodyResponseCallback<Schema$Greeting>): void;
+        /**
+         * Lists all greetings associated with an agent. *Note*: This method always sets `pageSize` to `0`.
+         * @example
+         * ```js
+         * // Before running the sample:
+         * // - Enable the API at:
+         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
+         * // - Login into gcloud by running:
+         * //   `$ gcloud auth application-default login`
+         * // - Install the npm module by running:
+         * //   `$ npm install googleapis`
+         *
+         * const {google} = require('googleapis');
+         * const businesscommunications = google.businesscommunications('v1');
+         *
+         * async function main() {
+         *   const auth = new google.auth.GoogleAuth({
+         *     // Scopes can be specified either as an array or as a single, space-delimited string.
+         *     scopes: [],
+         *   });
+         *
+         *   // Acquire an auth client, and bind it to all future calls
+         *   const authClient = await auth.getClient();
+         *   google.options({auth: authClient});
+         *
+         *   // Do the magic
+         *   const res = await businesscommunications.brands.agents.greetings.list({
+         *     // Specify the maximum number of results for the server to return. The server may limit the number of results returned per page. If the page_size is 0, the server will decide how many results to return.
+         *     pageSize: 'placeholder-value',
+         *     // The next_page_token value returned from a previous List request, if any.
+         *     pageToken: 'placeholder-value',
+         *     // Required. The unique identifier of the agent. If the brand ID is "1234" and agent ID is "5678", this parameter resolves to "brands/1234/agents/5678".
+         *     parent: 'brands/my-brand/agents/my-agent',
+         *   });
+         *   console.log(res.data);
+         *
+         *   // Example response
+         *   // {
+         *   //   "greetings": [],
+         *   //   "nextPageToken": "my_nextPageToken"
+         *   // }
+         * }
+         *
+         * main().catch(e => {
+         *   console.error(e);
+         *   throw e;
+         * });
+         *
+         * ```
+         *
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
+         */
+        list(params: Params$Resource$Brands$Agents$Greetings$List, options: StreamMethodOptions): GaxiosPromise<Readable>;
+        list(params?: Params$Resource$Brands$Agents$Greetings$List, options?: MethodOptions): GaxiosPromise<Schema$ListGreetingsResponse>;
+        list(params: Params$Resource$Brands$Agents$Greetings$List, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
+        list(params: Params$Resource$Brands$Agents$Greetings$List, options: MethodOptions | BodyResponseCallback<Schema$ListGreetingsResponse>, callback: BodyResponseCallback<Schema$ListGreetingsResponse>): void;
+        list(params: Params$Resource$Brands$Agents$Greetings$List, callback: BodyResponseCallback<Schema$ListGreetingsResponse>): void;
+        list(callback: BodyResponseCallback<Schema$ListGreetingsResponse>): void;
+        /**
+         * Updates the information about a greeting. *Caution*: If you update a field that takes a list as input, you must include the entire list in the update request. Updates to list fields replace the entire list.
+         * @example
+         * ```js
+         * // Before running the sample:
+         * // - Enable the API at:
+         * //   https://console.developers.google.com/apis/api/businesscommunications.googleapis.com
+         * // - Login into gcloud by running:
+         * //   `$ gcloud auth application-default login`
+         * // - Install the npm module by running:
+         * //   `$ npm install googleapis`
+         *
+         * const {google} = require('googleapis');
+         * const businesscommunications = google.businesscommunications('v1');
+         *
+         * async function main() {
+         *   const auth = new google.auth.GoogleAuth({
+         *     // Scopes can be specified either as an array or as a single, space-delimited string.
+         *     scopes: [],
+         *   });
+         *
+         *   // Acquire an auth client, and bind it to all future calls
+         *   const authClient = await auth.getClient();
+         *   google.options({auth: authClient});
+         *
+         *   // Do the magic
+         *   const res = await businesscommunications.brands.agents.greetings.patch({
+         *     // Output only. The name of the greeting, as set by Business Messages. Resolves to "brands/{brand_id\}/agents/{agent_id\}/greetings/{greeting_id\}" where {greeting_id\} is the unique ID of the greeting.
+         *     name: 'brands/my-brand/agents/my-agent/greetings/my-greeting',
+         *     // The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+         *     updateMask: 'placeholder-value',
+         *
+         *     // Request body metadata
+         *     requestBody: {
+         *       // request body parameters
+         *       // {
+         *       //   "name": "my_name",
+         *       //   "locale": "my_locale",
+         *       //   "welcomeMessages": [],
+         *       //   "conversationStarters": [],
+         *       //   "customId": "my_customId",
+         *       //   "adLink": "my_adLink"
+         *       // }
+         *     },
+         *   });
+         *   console.log(res.data);
+         *
+         *   // Example response
+         *   // {
+         *   //   "name": "my_name",
+         *   //   "locale": "my_locale",
+         *   //   "welcomeMessages": [],
+         *   //   "conversationStarters": [],
+         *   //   "customId": "my_customId",
+         *   //   "adLink": "my_adLink"
+         *   // }
+         * }
+         *
+         * main().catch(e => {
+         *   console.error(e);
+         *   throw e;
+         * });
+         *
+         * ```
+         *
+         * @param params - Parameters for request
+         * @param options - Optionally override request options, such as `url`, `method`, and `encoding`.
+         * @param callback - Optional callback that handles the response.
+         * @returns A promise if used with async/await, or void if used with a callback.
+         */
+        patch(params: Params$Resource$Brands$Agents$Greetings$Patch, options: StreamMethodOptions): GaxiosPromise<Readable>;
+        patch(params?: Params$Resource$Brands$Agents$Greetings$Patch, options?: MethodOptions): GaxiosPromise<Schema$Greeting>;
+        patch(params: Params$Resource$Brands$Agents$Greetings$Patch, options: StreamMethodOptions | BodyResponseCallback<Readable>, callback: BodyResponseCallback<Readable>): void;
+        patch(params: Params$Resource$Brands$Agents$Greetings$Patch, options: MethodOptions | BodyResponseCallback<Schema$Greeting>, callback: BodyResponseCallback<Schema$Greeting>): void;
+        patch(params: Params$Resource$Brands$Agents$Greetings$Patch, callback: BodyResponseCallback<Schema$Greeting>): void;
+        patch(callback: BodyResponseCallback<Schema$Greeting>): void;
+    }
+    export interface Params$Resource$Brands$Agents$Greetings$Create extends StandardParameters {
+        /**
+         * Required. The unique identifier of the agent associated with the greeting. If the brand ID is "1234" and the agent ID is "5678", this parameter resolves to "brands/1234/agents/5678".
+         */
+        parent?: string;
+        /**
+         * Request body metadata
+         */
+        requestBody?: Schema$Greeting;
+    }
+    export interface Params$Resource$Brands$Agents$Greetings$Get extends StandardParameters {
+        /**
+         * Required. The unique identifier of the greeting. If the brand ID is "1234", agent ID is "5678", and greeting ID is "abcd", this parameter resolves to "brands/1234/agents/5678/greetings/abcd".
+         */
+        name?: string;
+    }
+    export interface Params$Resource$Brands$Agents$Greetings$List extends StandardParameters {
+        /**
+         * Specify the maximum number of results for the server to return. The server may limit the number of results returned per page. If the page_size is 0, the server will decide how many results to return.
+         */
+        pageSize?: number;
+        /**
+         * The next_page_token value returned from a previous List request, if any.
+         */
+        pageToken?: string;
+        /**
+         * Required. The unique identifier of the agent. If the brand ID is "1234" and agent ID is "5678", this parameter resolves to "brands/1234/agents/5678".
+         */
+        parent?: string;
+    }
+    export interface Params$Resource$Brands$Agents$Greetings$Patch extends StandardParameters {
+        /**
+         * Output only. The name of the greeting, as set by Business Messages. Resolves to "brands/{brand_id\}/agents/{agent_id\}/greetings/{greeting_id\}" where {greeting_id\} is the unique ID of the greeting.
+         */
+        name?: string;
+        /**
+         * The update mask applies to the resource. For the FieldMask definition, see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+         */
+        updateMask?: string;
+        /**
+         * Request body metadata
+         */
+        requestBody?: Schema$Greeting;
     }
     export class Resource$Brands$Agents$Integrations {
         context: APIRequestContext;
